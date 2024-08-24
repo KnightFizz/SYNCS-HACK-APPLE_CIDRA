@@ -7,7 +7,7 @@
 | Yangqing Zheng :pig_nose: | https://github.com/zyqgrace     |
 | Micheal Fang :snowflake:    | https://github.com/KnightFizz    |
 | James Zhao :bulb: | https://github.com/cheese-zj |
-| Xinyi Chen :tea: | https://github.com/OrangeJellyfishCHEN |
+| Xinyi Chen :jellyfish: | https://github.com/OrangeJellyfishCHEN |
 
 ## Project Description
 **Name: Not decided yet**   
@@ -22,6 +22,7 @@ Fitness Battle Game is an innovative multiplayer game that leverages webcam-base
   - https://github.com/google/mediapipe
 - Flask
 - Next.js
+- Procreate
 
 #### Models
 The pose detection used in this project is based on Google's Mediapipe framework, which is a cross-platform machine learning library designed to identify multiple pose positions. Mediapipe provides robust tools for real-time pose tracking and recognition, enabling applications that rely on accurate body pose estimations to identify various body positions and movements.
@@ -33,3 +34,6 @@ The pose detection used in this project is based on Google's Mediapipe framework
 - A Hit Points（HP）bar is displayed for each player, and the game ends when one player's HP reaches zero.
 - (Optional) Before entering the game, players can customize their avatar or character.
 
+## Informal Reference
+- For squat GIF: https://www.youtube.com/watch?v=xqvCmoLULNY
+- For curl GIF: https://www.youtube.com/watch?v=TVflFTempWA
