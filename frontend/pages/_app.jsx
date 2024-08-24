@@ -34,7 +34,7 @@ export default function Home() {
   }, []);
 
   console.log(totalDamage);
-  console.log(counts); // Print the fetched counts
+  //console.log(counts); // Print the fetched counts
 
   return (
     <div className="h-screen p-4 bg-gray-100">
@@ -46,7 +46,7 @@ export default function Home() {
             title="Exercise Counts"
             className="h-full"
           >
-          <PostureComp />
+            <PostureComp />
           </Block>
         </div>
 
@@ -73,7 +73,7 @@ export default function Home() {
                 content="4/5 width of bottom row"
                 className="h-full"
               >
-                <IconList onTotalDamage={handleTotalDamage} />
+                <IconList counts={counts} onTotalDamage={handleTotalDamage} /> {/* Pass counts here */}
               </Block>
             </div>
           </div>

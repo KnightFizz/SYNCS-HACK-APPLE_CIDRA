@@ -1,10 +1,10 @@
 import React, { useState, useCallback, useEffect } from "react";
 
-const IconList = ({ onTotalDamage }) => {
-  const [icons, setIcons] = useState([]);  
+const IconList = ({ counts, onTotalDamage }) => {
+  console.log(counts);
+  const [icons, setIcons] = useState([]);
   const [isRemoving, setIsRemoving] = useState(false);
-  
-  const fakeList = [1, 1, 0, 0, 0]; // Example list
+
   const availableIcons = ["🔥", "🧊", "🌪️", "🍀", "🌟"];
   const iconColors = {
     "🔥": "bg-orange-300",
@@ -24,19 +24,19 @@ const IconList = ({ onTotalDamage }) => {
 
   const MAX_ICONS = 8;
 
-  // Initialize icons based on fakeList
+  // Initialize icons based on counts
   useEffect(() => {
-    const initializedIcons = fakeList.reduce((acc, value, index) => {
-      if (value === 1) {
+    const initializedIcons = Object.entries(counts).reduce((acc, [key, value], index) => {
+      for (let i = 0; i < value; i++) {
         acc.push({
-          id: Date.now() + index, // Unique ID for each icon
+          id: Date.now() + index * value + i, // Unique ID for each icon
           name: availableIcons[index],
         });
       }
       return acc;
     }, []);
-    setIcons(initializedIcons);
-  }, []); // Empty dependency array to run only once on mount
+    setIcons(initializedIcons.slice(0, MAX_ICONS)); // Limit to MAX_ICONS
+  }, [counts]); // Run whenever counts changes
 
   const addRandomIcon = useCallback(() => {
     if (icons.length < MAX_ICONS) {
