@@ -3,7 +3,7 @@ import { createCanvas, loadImage } from "canvas";
 
 const HPBar = ({ hp, maxHp, label, isPlayer }) => (
   <div
-    className={`w-48 ${isPlayer ? "ml-4" : "mr-4"} bg-black/50 rounded-xl p-2`}
+    className={`w-48 ${isPlayer ? "ml-4" : "mr-4"} bg-black/50 rounded-2xl p-2`}
   >
     <div className="text-white text-base font-bold mb-1">
       {label} : {hp} / {maxHp} HP
@@ -20,8 +20,8 @@ const HPBar = ({ hp, maxHp, label, isPlayer }) => (
 
 const CanvasBattleScene = () => {
   const canvasRef = useRef(null);
-  const [playerHP, setPlayerHP] = useState(100);
-  const [enemyHP, setEnemyHP] = useState(100);
+  const [playerHP, setPlayerHP] = useState(300);
+  const [enemyHP, setEnemyHP] = useState(300);
   const [currentTurn, setCurrentTurn] = useState("player");
 
   useEffect(() => {
@@ -53,11 +53,6 @@ const CanvasBattleScene = () => {
           200,
           200
         );
-
-        ctx.font = "24px Arial";
-        ctx.fillStyle = "white";
-        ctx.textAlign = "center";
-        ctx.fillText(`Current Turn: ${currentTurn}`, canvas.width / 2, 30);
 
         const onscreenCanvas = canvasRef.current;
         const onscreenCtx = onscreenCanvas.getContext("2d");
@@ -98,8 +93,8 @@ const CanvasBattleScene = () => {
   return (
     <div className="relative">
       <div className="absolute top-3 left-0 right-0 flex justify-between p-1 z-10">
-        <HPBar hp={playerHP} maxHp={100} label="Player" isPlayer={true} />
-        <HPBar hp={enemyHP} maxHp={100} label="Enemy" isPlayer={false} />
+        <HPBar hp={playerHP} maxHp={300} label="Player" isPlayer={true} />
+        <HPBar hp={enemyHP} maxHp={300} label="Enemy" isPlayer={false} />
       </div>
       <canvas
         ref={canvasRef}
