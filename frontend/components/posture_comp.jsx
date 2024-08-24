@@ -1,4 +1,5 @@
 import React from "react";
+import WebcamLoader from "./WebcamLoader.jsx";
 
 const PostureComp = () => {
   const gridImages = [
@@ -10,8 +11,10 @@ const PostureComp = () => {
 
   return (
     <div className="h-full flex flex-col">
-      <div className="flex-1 bg-gray-300 flex items-center justify-center mb-4 border-4 rounded-sm border-slate-800">
+      <div className="flex-1 bg-gray-300 flex items-center justify-center mb-4 border-4 rounded-sm border-slate-800 max-h-72 overflow-hidden">
         <p className="text-lg font-semibold">Webcam Placeholder</p>
+        <img src="https://www.youtube.com/live/Vg13S-zzol0?si=8veHvAWMhCNm01Wr" alt="Video Stream" width="800" />
+        {/*<WebcamLoader></WebcamLoader>*/}
       </div>
 
       {/* Grid view */}
