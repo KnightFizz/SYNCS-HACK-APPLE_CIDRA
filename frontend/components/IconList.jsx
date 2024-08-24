@@ -13,11 +13,11 @@ const IconList = ({ onTotalDamage }) => {
   };
 
   const iconDamage = {
-    "🔥": 15,
+    "🔥": 10,
     "🧊": 12,
-    "🌪️": 20,
-    "🍀": 15,
-    "🌟": 30,
+    "🌪️": 18,
+    "🍀": 14,
+    "🌟": 25,
   };
 
   const MAX_ICONS = 8;
@@ -34,7 +34,10 @@ const IconList = ({ onTotalDamage }) => {
   }, [icons]);
 
   const removeAllIcons = useCallback(() => {
-    const totalDamage = icons.reduce((acc, icon) => acc + iconDamage[icon.name], 0);
+    const totalDamage = icons.reduce(
+      (acc, icon) => acc + iconDamage[icon.name],
+      0
+    );
     console.log(totalDamage);
     onTotalDamage(totalDamage); // Send total damage to the parent
     setIsRemoving(true); // Trigger the boom effect
