@@ -2,13 +2,13 @@ import socket
 import threading
 import json
 import time
-from flask import Flask, jsonify, Response
+from flask import Flask, jsonify, Response, request
 from flask_cors import CORS
 from detection_model import get_counts, run_pose_detection
 
 # Flask application
 app = Flask(__name__)
-CORS(app)
+CORS(app,resources={r"/*": {"origins": "http://localhost:3000"}})
 data_to_send = {}
 
 # Flask route to get exercise counts
@@ -24,6 +24,18 @@ def video_feed():
     return Response(
         run_pose_detection(), mimetype="multipart/x-mixed-replace; boundary=frame"
     )
+
+# New Flask route to receive code from frontend
+@app.route("/send_code", methods=["POST"])
+def receive_code():
+    data = request.json  # Receive JSON data from the request
+    code = data.get('code', '')  # Extract the 'code' field from the JSON data
+    print(f"Received code: {code}")
+
+    # Process the code as needed (e.g., save it, execute it, etc.)
+    # Here, we are just printing it to the console.
+
+    return jsonify({'status': 'success', 'received_code': code})
 
 # TCP Server: Function to send data to connected clients
 def tcp_server(host='0.0.0.0', port=5002):

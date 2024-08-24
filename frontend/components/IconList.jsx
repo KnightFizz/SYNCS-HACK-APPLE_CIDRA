@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from "react";
 
 const IconList = ({ onTotalDamage }) => {
-  const [icons, setIcons] = useState([]);
+  const [icons, setIcons] = useState([]);  
   const [isRemoving, setIsRemoving] = useState(false); // State to trigger the boom effect
   const availableIcons = ["🔥", "🧊", "🌪️", "🍀", "🌟"];
   const iconColors = {
@@ -38,49 +38,66 @@ const IconList = ({ onTotalDamage }) => {
       (acc, icon) => acc + iconDamage[icon.name],
       0
     );
-    console.log(totalDamage);
-    onTotalDamage(totalDamage); // Send total damage to the parent
+    // Trigger any further actions with the damage, like updating state in the parent
+    onTotalDamage(totalDamage);
+    // Send the total damage to the backend
+    console.log("sjkkajslkajs");
+    sendTotalDamageToBackend(totalDamage);
     setIsRemoving(true); // Trigger the boom effect
     setTimeout(() => {
       setIcons([]); // Remove all icons after the animation
       setIsRemoving(false); // Reset the removing state
-    }, 600); // Duration matches the CSS animation time
+    }, 600);
   }, [icons, onTotalDamage]);
 
-  const handleJoyConInput = useCallback(() => {
-    const gamepads = navigator.getGamepads();
-    const joyCon = gamepads[0]; // Assuming the Joy-Con is the first connected gamepad
-    if (joyCon) {
-      // A Button (Select/Remove All)
-      if (joyCon.buttons[0]?.pressed && icons.length > 0) {
-        removeAllIcons();
-      }
-      // B Button (Add Icon)
-      if (joyCon.buttons[1]?.pressed) {
-        addRandomIcon();
-      }
-    }
-  }, [icons, addRandomIcon, removeAllIcons]);
+  const sendTotalDamageToBackend = async (damage) => {
+    try {
+      const response = await fetch('http://127.0.0.1:5000/receive_damage', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ totalDamage: damage }),
+      });
 
-  useEffect(() => {
-    const onGamepadConnected = () => {
-      console.log("Gamepad connected");
-    };
-    const onGamepadDisconnected = () => {
-      console.log("Gamepad disconnected");
-    };
-    window.addEventListener("gamepadconnected", onGamepadConnected);
-    window.addEventListener("gamepaddisconnected", onGamepadDisconnected);
-    const interval = setInterval(() => {
-      handleJoyConInput();
-    }, 100); // Check every 100ms
-    return () => {
-      window.removeEventListener("gamepadconnected", onGamepadConnected);
-      window.removeEventListener("gamepaddisconnected", onGamepadDisconnected);
-      clearInterval(interval);
-    };
-  }, [handleJoyConInput]);
-
+      const data = await response.json();
+      console.log('Response from server:', data);
+    } catch (error) {
+      console.error('Error sending total damage to backend:', error);
+    }};
+    const handleJoyConInput = useCallback(() => {
+      const gamepads = navigator.getGamepads();
+      const joyCon = gamepads[0]; // Assuming the Joy-Con is the first connected gamepad
+      if (joyCon) {
+        // A Button (Select/Remove All)
+        if (joyCon.buttons[0]?.pressed && icons.length > 0) {
+          removeAllIcons();
+        }
+        // B Button (Add Icon)
+        if (joyCon.buttons[1]?.pressed) {
+          addRandomIcon();
+        }
+      }
+    }, [icons, addRandomIcon, removeAllIcons]);
+  
+    useEffect(() => {
+      const onGamepadConnected = () => {
+        console.log("Gamepad connected");
+      };
+      const onGamepadDisconnected = () => {
+        console.log("Gamepad disconnected");
+      };
+      window.addEventListener("gamepadconnected", onGamepadConnected);
+      window.addEventListener("gamepaddisconnected", onGamepadDisconnected);
+      const interval = setInterval(() => {
+        handleJoyConInput();
+      }, 100); // Check every 100ms
+      return () => {
+        window.removeEventListener("gamepadconnected", onGamepadConnected);
+        window.removeEventListener("gamepaddisconnected", onGamepadDisconnected);
+        clearInterval(interval);
+      };
+    }, [handleJoyConInput]);
   return (
     <div className="w-full flex flex-col items-center gap-4 p-4">
       <div
