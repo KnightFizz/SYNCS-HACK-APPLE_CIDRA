@@ -8,13 +8,8 @@ import numpy as np
 mp_pose = mp.solutions.pose
 mp_drawing = mp.solutions.drawing_utils
 
-# Initialize counts and states
-squat_count = 0
-curl_count = 0
-squat_position = None
-curl_position = None
 
-# Function to calculate angle between three points
+ #Function to calculate angle between three points
 def calculate_angle(a, b, c):
     a = np.array(a)  # First point
     b = np.array(b)  # Second point (the angle vertex)
@@ -28,9 +23,23 @@ def calculate_angle(a, b, c):
 
     return angle
 
+
+
+squat_count = 0
+curl_count = 0
+lateral_raise_count = 0
+shoulder_press_count = 0
+
+squat_position = None
+curl_position = None
+lateral_position = None
+shoulder_position = None
+
+
 # Function to run pose detection
 def run_pose_detection():
-    global squat_count, curl_count, squat_position, curl_position
+    global squat_count, curl_count, lateral_raise_count, shoulder_press_count
+    global squat_position, curl_position, lateral_position, shoulder_position
 
     cap = cv2.VideoCapture(0)
 
@@ -52,44 +61,52 @@ def run_pose_detection():
             try:
                 landmarks = results.pose_landmarks.landmark
 
-                left_shoulder = [
-                    landmarks[mp_pose.PoseLandmark.LEFT_SHOULDER.value].x,
-                    landmarks[mp_pose.PoseLandmark.LEFT_SHOULDER.value].y,
-                ]
-                left_elbow = [
-                    landmarks[mp_pose.PoseLandmark.LEFT_ELBOW.value].x,
-                    landmarks[mp_pose.PoseLandmark.LEFT_ELBOW.value].y,
-                ]
-                left_wrist = [
-                    landmarks[mp_pose.PoseLandmark.LEFT_WRIST.value].x,
-                    landmarks[mp_pose.PoseLandmark.LEFT_WRIST.value].y,
-                ]
-                left_hip = [
-                    landmarks[mp_pose.PoseLandmark.LEFT_HIP.value].x,
-                    landmarks[mp_pose.PoseLandmark.LEFT_HIP.value].y,
-                ]
-                left_knee = [
-                    landmarks[mp_pose.PoseLandmark.LEFT_KNEE.value].x,
-                    landmarks[mp_pose.PoseLandmark.LEFT_KNEE.value].y,
-                ]
-                left_ankle = [
-                    landmarks[mp_pose.PoseLandmark.LEFT_ANKLE.value].x,
-                    landmarks[mp_pose.PoseLandmark.LEFT_ANKLE.value].y,
-                ]
+                # Extract the landmarks for relevant joints
+                left_shoulder = [landmarks[mp_pose.PoseLandmark.LEFT_SHOULDER.value].x,
+                                 landmarks[mp_pose.PoseLandmark.LEFT_SHOULDER.value].y]
+                left_elbow = [landmarks[mp_pose.PoseLandmark.LEFT_ELBOW.value].x,
+                              landmarks[mp_pose.PoseLandmark.LEFT_ELBOW.value].y]
+                left_wrist = [landmarks[mp_pose.PoseLandmark.LEFT_WRIST.value].x,
+                              landmarks[mp_pose.PoseLandmark.LEFT_WRIST.value].y]
+                left_hip = [landmarks[mp_pose.PoseLandmark.LEFT_HIP.value].x,
+                            landmarks[mp_pose.PoseLandmark.LEFT_HIP.value].y]
+                left_knee = [landmarks[mp_pose.PoseLandmark.LEFT_KNEE.value].x,
+                             landmarks[mp_pose.PoseLandmark.LEFT_KNEE.value].y]
+                left_ankle = [landmarks[mp_pose.PoseLandmark.LEFT_ANKLE.value].x,
+                              landmarks[mp_pose.PoseLandmark.LEFT_ANKLE.value].y]
 
-                squat_angle = calculate_angle(left_hip, left_knee, left_ankle)
-                if squat_angle < 140:
-                    squat_position = "down"
-                if squat_position == "down" and squat_angle > 160:
-                    squat_position = "up"
-                    squat_count += 1
-
+               # Curl detection with wrist position and stricter angle checking
                 curl_angle = calculate_angle(left_shoulder, left_elbow, left_wrist)
-                if curl_angle < 50:
+                if curl_angle < 50 and left_wrist[1] > left_shoulder[1]:  # Wrist below shoulder
                     curl_position = "curl"
                 if curl_position == "curl" and curl_angle > 160:
                     curl_position = "uncurl"
                     curl_count += 1
+
+                # # Shoulder Press detection with wrist position
+                # shoulder_press_angle = calculate_angle(left_shoulder, left_elbow, left_wrist)
+                # if shoulder_press_angle < 40 and left_wrist[1] < left_shoulder[1]:  # Wrist above shoulder
+                #     shoulder_position = "up"
+                # if shoulder_position == "up" and shoulder_press_angle > 160:  # Full arm extension
+                #     shoulder_position = "down"
+                #     shoulder_press_count += 1
+
+                # Squat detection with stricter angles
+                squat_angle = calculate_angle(left_hip, left_knee, left_ankle)
+                if squat_angle < 130:
+                    squat_position = "down"
+                if squat_position == "down" and squat_angle > 170:  # Ensure full extension
+                    squat_position = "up"
+                    squat_count += 1
+
+                # Lateral Raise detection with hand position
+                lateral_angle = calculate_angle(left_hip, left_shoulder, left_elbow)
+                if lateral_angle > 90 and lateral_angle < 110 and left_wrist[1] < left_shoulder[1]:  # Arm raised above shoulder
+                    lateral_position = "raise"
+                if lateral_position == "raise" and lateral_angle < 60:
+                    lateral_position = "down"
+                    lateral_raise_count += 1
+
 
             except:
                 pass
@@ -111,4 +128,8 @@ def run_pose_detection():
 
 # Function to get current counts
 def get_counts():
-    return {"squats": squat_count, "curls": curl_count}
+    return {
+        "squats": squat_count,
+        "curls": curl_count,
+        "lateral_raises": lateral_raise_count
+    }
