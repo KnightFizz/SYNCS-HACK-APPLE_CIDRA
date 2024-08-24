@@ -19,7 +19,7 @@ def get_counts_route():
 @app.route("/video_feed")
 def video_feed():
     return Response(
-        detection_model.run_pose_detection(), mimetype="multipart/x-mixed-replace; boundary=frame"
+        run_pose_detection(), mimetype="multipart/x-mixed-replace; boundary=frame"
     )
 
 # Define a route to receive the dictionary
@@ -33,6 +33,7 @@ def receive_dict():
         return jsonify({"error": "Invalid JSON format"}), 400
 
 def run_server(host='0.0.0.0', port=5000):
+    port = target_port
     app.run(host=host, port=port, debug=True, use_reloader=False)
 
 def send_dict(target_host, target_port, data_dict):
