@@ -1,7 +1,6 @@
 import React, { useState, useCallback, useEffect } from "react";
 
 const IconList = ({ counts, onTotalDamage }) => {
-  console.log(counts);
   const [icons, setIcons] = useState([]);
   const [isRemoving, setIsRemoving] = useState(false);
 
@@ -24,30 +23,25 @@ const IconList = ({ counts, onTotalDamage }) => {
 
   const MAX_ICONS = 8;
 
-  // Initialize icons based on counts
+  // Accumulate icons based on counts
   useEffect(() => {
-    const initializedIcons = Object.entries(counts).reduce((acc, [key, value], index) => {
+    const newIcons = Object.entries(counts).reduce((acc, [key, value], index) => {
       for (let i = 0; i < value; i++) {
-        acc.push({
-          id: Date.now() + index * value + i, // Unique ID for each icon
-          name: availableIcons[index],
-        });
+        if (acc.length < MAX_ICONS) {
+          acc.push({
+            id: Date.now() + index * value + i, // Unique ID for each icon
+            name: availableIcons[index],
+          });
+        }
       }
       return acc;
     }, []);
-    setIcons(initializedIcons.slice(0, MAX_ICONS)); // Limit to MAX_ICONS
-  }, [counts]); // Run whenever counts changes
 
-  const addRandomIcon = useCallback(() => {
-    if (icons.length < MAX_ICONS) {
-      const randomIndex = Math.floor(Math.random() * availableIcons.length);
-      const newIcon = {
-        id: Date.now(),
-        name: availableIcons[randomIndex],
-      };
-      setIcons((prevIcons) => [...prevIcons, newIcon]);
-    }
-  }, [icons]);
+    setIcons(prevIcons => {
+      const combinedIcons = [...prevIcons, ...newIcons];
+      return combinedIcons.slice(0, MAX_ICONS); // Ensure no more than MAX_ICONS
+    });
+  }, [counts]); // Run whenever counts changes
 
   const removeAllIcons = useCallback(() => {
     const totalDamage = icons.reduce(
@@ -87,11 +81,8 @@ const IconList = ({ counts, onTotalDamage }) => {
       if (joyCon.buttons[0]?.pressed && icons.length > 0) {
         removeAllIcons();
       }
-      // if (joyCon.buttons[1]?.pressed) {
-      //   addRandomIcon();
-      // }
     }
-  }, [icons, addRandomIcon, removeAllIcons]);
+  }, [icons, removeAllIcons]);
 
   useEffect(() => {
     const onGamepadConnected = () => {
