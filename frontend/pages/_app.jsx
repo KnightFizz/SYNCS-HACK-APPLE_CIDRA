@@ -1,6 +1,7 @@
 import React from "react";
 import "../styles/global.css";
 import PostureComp from "../components/posture_comp";
+import IconList from "../components/IconList";
 
 const Block = ({ color, title, content, className, children }) => (
   <div
@@ -28,7 +29,7 @@ export default function Home() {
         </div>
         <div className="col-span-8 grid grid-rows-6 gap-4">
           {/* Block 2 - 3/4 width, 4/5 height */}
-          <div className="row-span-5">
+          <div className="row-span-10">
             <Block
               color="bg-green-200"
               title="Block 2"
@@ -38,15 +39,17 @@ export default function Home() {
           </div>
 
           {/* Bottom row for Block 3 and 4 - 1/5 height */}
-          <div className="row-span-1 grid grid-cols-10 gap-4">
+          <div className="row-span-4 grid grid-cols-10 gap-4">
             {/* Block 3 - 4/5 width of the bottom row */}
             <div className="col-span-10">
               <Block
                 color="bg-yellow-200"
-                title="Block 3"
+                title=""
                 content="4/5 width of bottom row"
                 className="h-full"
-              />
+              >
+                <IconList />
+              </Block>
             </div>
           </div>
         </div>
