@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from "react";
 
-const IconList = () => {
+const IconList = ({ onTotalDamage }) => {
   const [icons, setIcons] = useState([]);
   const [isRemoving, setIsRemoving] = useState(false); // State to trigger the boom effect
   const availableIcons = ["🔥", "🧊", "🌪️", "🍀", "🌟"];
@@ -34,12 +34,15 @@ const IconList = () => {
   }, [icons]);
 
   const removeAllIcons = useCallback(() => {
+    const totalDamage = icons.reduce((acc, icon) => acc + iconDamage[icon.name], 0);
+    console.log(totalDamage);
+    onTotalDamage(totalDamage); // Send total damage to the parent
     setIsRemoving(true); // Trigger the boom effect
     setTimeout(() => {
       setIcons([]); // Remove all icons after the animation
       setIsRemoving(false); // Reset the removing state
     }, 600); // Duration matches the CSS animation time
-  }, []);
+  }, [icons, onTotalDamage]);
 
   const handleJoyConInput = useCallback(() => {
     const gamepads = navigator.getGamepads();
