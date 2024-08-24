@@ -7,7 +7,7 @@ import argparse
 
 app = Flask(__name__)
 
-# Example dictionary to send
+
 data_to_send = detection_model.get_counts()
 
 # Define a route to receive the dictionary
