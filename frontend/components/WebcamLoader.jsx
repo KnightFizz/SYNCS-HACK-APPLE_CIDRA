@@ -37,6 +37,8 @@ const WebcamLoader = () => {
             onError={handleError}
             playing={true} // Probably not using Youtube we can remove those two lines
             controls={false} // Probably not using Youtube we can remove those two lines
+            volume={0}
+            mute={true}
           />
       ) : null}
 
