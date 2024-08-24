@@ -23,6 +23,9 @@ const CanvasBattleScene = ({ totalDamage }) => {
   const [playerHP, setPlayerHP] = useState(300);
   const [enemyHP, setEnemyHP] = useState(300);
   const [currentTurn, setCurrentTurn] = useState("player");
+  const [playerDamaged, setPlayerDamaged] = useState(false);
+  const [enemyDamaged, setEnemyDamaged] = useState(false);
+  const [particles, setParticles] = useState([]);
 
   useEffect(() => {
     const canvas = createCanvas(700, 390);
@@ -33,6 +36,23 @@ const CanvasBattleScene = ({ totalDamage }) => {
       const backgroundImage = await loadImage("/Resources/bg/woodfield.webp");
       const playerImage = await loadImage("/Resources/GIF/Squat_Update.gif");
       const enemyImage = await loadImage("/Resources/GIF/Squat_Update.gif");
+
+      const drawParticles = () => {
+        particles.forEach((particle, index) => {
+          ctx.beginPath();
+          ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+          ctx.fillStyle = particle.color;
+          ctx.fill();
+
+          particle.x += particle.vx;
+          particle.y += particle.vy;
+          particle.size *= 0.95;
+
+          if (particle.size < 0.5) {
+            particles.splice(index, 1);
+          }
+        });
+      };
 
       const drawScene = () => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -45,7 +65,21 @@ const CanvasBattleScene = ({ totalDamage }) => {
         ctx.fillStyle = "rgba(100, 100, 100, 0.5)";
         ctx.fill();
 
+        // Draw player with damage effect
+        ctx.save();
+        if (playerDamaged) {
+          ctx.filter = "saturate(200%) hue-rotate(150deg)";
+          ctx.translate(Math.random() * 4 - 2, Math.random() * 4 - 2);
+        }
         ctx.drawImage(playerImage, 80, canvas.height - 250, 200, 200);
+        ctx.restore();
+
+        // Draw enemy with damage effect
+        ctx.save();
+        if (enemyDamaged) {
+          ctx.filter = "saturate(200%) hue-rotate(150deg)";
+          ctx.translate(Math.random() * 4 - 2, Math.random() * 4 - 2);
+        }
         ctx.drawImage(
           enemyImage,
           canvas.width - 330,
@@ -53,6 +87,9 @@ const CanvasBattleScene = ({ totalDamage }) => {
           200,
           200
         );
+        ctx.restore();
+
+        drawParticles();
 
         const onscreenCanvas = canvasRef.current;
         const onscreenCtx = onscreenCanvas.getContext("2d");
@@ -69,12 +106,34 @@ const CanvasBattleScene = ({ totalDamage }) => {
     return () => {
       cancelAnimationFrame(animationFrameId);
     };
-  }, [currentTurn]);
+  }, [currentTurn, playerDamaged, enemyDamaged, particles]);
 
-  // Use totalDamage to reduce enemy HP
+  const createExplosion = (x, y, damage) => {
+    const particleCount = damage > 40 ? 100 : damage > 25 ? 50 : 25;
+    const explosionSize = damage > 40 ? 40 : damage > 25 ? 30 : 20;
+    const colors = ["#FF0000", "#FFA500", "#FFFF00"];
+
+    const newParticles = Array(particleCount)
+      .fill()
+      .map(() => ({
+        x,
+        y,
+        size: Math.random() * 3 + 2,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        vx: (Math.random() - 0.5) * explosionSize * 0.2,
+        vy: (Math.random() - 0.5) * explosionSize * 0.2,
+      }));
+
+    setParticles((prevParticles) => [...prevParticles, ...newParticles]);
+  };
+
+  // Use totalDamage to reduce enemy HP and create explosion
   useEffect(() => {
     if (totalDamage > 0) {
       setEnemyHP((prev) => Math.max(0, prev - totalDamage));
+      setEnemyDamaged(true);
+      createExplosion(500, 140, totalDamage); // Adjust x, y to match enemy position
+      setTimeout(() => setEnemyDamaged(false), 300);
     }
   }, [totalDamage]);
 
@@ -82,6 +141,9 @@ const CanvasBattleScene = ({ totalDamage }) => {
     if (currentTurn === "player") {
       const damage = Math.floor(Math.random() * 20) + 10;
       setEnemyHP((prev) => Math.max(0, prev - damage));
+      setEnemyDamaged(true);
+      createExplosion(500, 140, damage); // Adjust x, y to match enemy position
+      setTimeout(() => setEnemyDamaged(false), 300);
       setCurrentTurn("enemy");
     }
   };
@@ -91,6 +153,9 @@ const CanvasBattleScene = ({ totalDamage }) => {
       const timer = setTimeout(() => {
         const damage = Math.floor(Math.random() * 15) + 5;
         setPlayerHP((prev) => Math.max(0, prev - damage));
+        setPlayerDamaged(true);
+        createExplosion(180, 240, damage); // Adjust x, y to match player position
+        setTimeout(() => setPlayerDamaged(false), 300);
         setCurrentTurn("player");
       }, 1000);
       return () => clearTimeout(timer);
@@ -107,7 +172,7 @@ const CanvasBattleScene = ({ totalDamage }) => {
         ref={canvasRef}
         width={700}
         height={360}
-        className="w-full h-auto border-4 border-black rounded-sm"
+        className="w-full h-auto border-4 border-black rounded-md shadow-inner"
       />
       <button
         onClick={handleAttack}

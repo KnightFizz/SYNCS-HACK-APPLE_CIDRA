@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react"; 
+import { useState } from "react";
 import "../styles/global.css";
 import PostureComp from "../components/posture_comp";
 import IconList from "../components/IconList";
@@ -7,7 +7,7 @@ import BattleScene from "../components/BattleScene.jsx";
 
 const Block = ({ color, title, content, className, children }) => (
   <div
-    className={`${color} ${className} border-4 border-slate-800 drop-shadow-[6px_6px_0px_rgba(0,0,0,0.8)] p-3 rounded-md shadow-md flex flex-col`}
+    className={`${color} ${className} border-4 border-slate-800 drop-shadow-[6px_6px_0px_rgba(0,0,0,0.8)] p-3 rounded-xl shadow-md flex flex-col`}
   >
     <h2 className="text-xl font-bold mb-2">{title}</h2>
     {children || <p className="text-center">{content}</p>}
@@ -59,7 +59,7 @@ export default function Home() {
                 content="4/5 width of bottom row"
                 className="h-full"
               >
-                <IconList onTotalDamage={handleTotalDamage}/>
+                <IconList onTotalDamage={handleTotalDamage} />
               </Block>
             </div>
           </div>
