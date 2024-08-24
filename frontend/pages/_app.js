@@ -1,4 +1,5 @@
 import React from "react";
+import IconList from '../components/IconList';
 import "../styles/global.css";
 
 const Block = ({ color, title, content, className }) => (
@@ -34,12 +35,9 @@ export default function Home() {
       {/* Bottom section - 1/5 of the screen */}
       <div className="h-1/5 bg-gray-300 p-4">
         <div className="h-full grid grid-cols-10 gap-4">
-          <Block
-            color="bg-yellow-200"
-            title="Block 3"
-            content="4/5 width block in the bottom section"
-            className="col-span-8"
-          />
+          <div className="col-span-8">
+              <IconList/>
+            </div>
           <Block
             color="bg-red-200"
             title="Block 4"
