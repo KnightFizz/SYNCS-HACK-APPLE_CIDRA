@@ -32,9 +32,11 @@ const WebcamLoader = () => {
         </div>
       ) : isClient ? (
           <ReactPlayer
-            url="https://www.youtube.com/watch?v=jfKfPfyJRdk"
-            onReady={handleLoad} // Use onReady instead of onLoad
+            url="https://www.youtube.com/watch?v=jfKfPfyJRdkh"
+            onReady={handleLoad}
             onError={handleError}
+            playing={true} // Probably not using Youtube we can remove those two lines
+            controls={false} // Probably not using Youtube we can remove those two lines
           />
       ) : null}
 
