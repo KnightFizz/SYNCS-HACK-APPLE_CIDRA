@@ -2,6 +2,7 @@ import React, { useState, useCallback, useEffect } from "react";
 import axios from 'axios'; // Make sure to install axios using npm install axios
 
 const IconList = ({ counts, onTotalDamage }) => {
+  console.log("IconList counts:", counts);
   const [icons, setIcons] = useState([]);
   const [isRemoving, setIsRemoving] = useState(false);
 
@@ -103,6 +104,7 @@ const IconList = ({ counts, onTotalDamage }) => {
   }, [handleJoyConInput]);
 
   return (
+
     <div className="w-full flex flex-col items-center gap-4 p-4">
       <div
         className={`w-full grid grid-cols-8 gap-2 p-4 rounded-lg min-h-[100px] bg-none ${

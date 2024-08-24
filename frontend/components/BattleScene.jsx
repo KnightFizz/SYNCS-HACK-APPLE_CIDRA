@@ -37,11 +37,19 @@ const Modal = ({ isOpen, onClose, result }) => {
   );
 };
 
-const CanvasBattleScene = ({ totalDamage }) => {
+const CanvasBattleScene = ({ damageReceived, totalDamage }) => {
+
+  console.log("damageReceived at Canvas:", damageReceived);
+
+  const damage = damageReceived.dmg;
+  console.log("damageReceived at Canvas:", damage);
+  console.log("typeof dmg:", typeof damage);
+
+
   const canvasRef = useRef(null);
   const [playerHP, setPlayerHP] = useState(500);
   const [enemyHP, setEnemyHP] = useState(500);
-  const [currentTurn, setCurrentTurn] = useState("player");
+  // const [currentTurn, setCurrentTurn] = useState("player");
   const [playerDamaged, setPlayerDamaged] = useState(false);
   const [enemyDamaged, setEnemyDamaged] = useState(false);
   const [particles, setParticles] = useState([]);
@@ -121,7 +129,7 @@ const CanvasBattleScene = ({ totalDamage }) => {
     return () => {
       cancelAnimationFrame(animationFrameId);
     };
-  }, [currentTurn, playerDamaged, enemyDamaged, particles]);
+  }, [playerDamaged, enemyDamaged, particles]);
 
   const createExplosion = (x, y, damage) => {
     const particleCount = damage > 40 ? 100 : damage > 25 ? 50 : 25;
@@ -142,6 +150,23 @@ const CanvasBattleScene = ({ totalDamage }) => {
     setParticles((prevParticles) => [...prevParticles, ...newParticles]);
   };
 
+  // Update player's HP if damageReceived is not zero
+  useEffect(() => {
+    // console.log(damageReceived);
+    if (damage > 0) {
+      const newPlayerHP = Math.max(0, playerHP - damage);
+      setPlayerHP(newPlayerHP);
+      setPlayerDamaged(true);
+      createExplosion(180, 240, damage);
+      setTimeout(() => setPlayerDamaged(false), 300);
+
+      if (newPlayerHP === 0) {
+        setGameResult("lose");
+        setIsModalOpen(true);
+      }
+    }
+  }, [damage]);
+
   useEffect(() => {
     if (totalDamage > 0) {
       const newEnemyHP = Math.max(0, enemyHP - totalDamage);
@@ -157,49 +182,48 @@ const CanvasBattleScene = ({ totalDamage }) => {
     }
   }, [totalDamage]);
 
-  const handleAttack = () => {
-    if (currentTurn === "player") {
-      const damage = Math.floor(Math.random() * 20) + 10;
-      const newEnemyHP = Math.max(0, enemyHP - damage);
-      setEnemyHP(newEnemyHP);
-      setEnemyDamaged(true);
-      createExplosion(500, 140, damage);
-      setTimeout(() => setEnemyDamaged(false), 300);
-      setCurrentTurn("enemy");
+  // const handleAttack = () => {
+  //   if (currentTurn === "player") {
+  //     const damage = Math.floor(Math.random() * 20) + 10;
+  //     const newEnemyHP = Math.max(0, enemyHP - damage);
+  //     setEnemyHP(newEnemyHP);
+  //     setEnemyDamaged(true);
+  //     createExplosion(500, 140, damage);
+  //     setTimeout(() => setEnemyDamaged(false), 300);
+  //     setCurrentTurn("enemy");
 
-      if (newEnemyHP === 0) {
-        setGameResult("win");
-        setIsModalOpen(true);
-      }
-    }
-  };
+  //     if (newEnemyHP === 0) {
+  //       setGameResult("win");
+  //       setIsModalOpen(true);
+  //     }
+  //   }
+  // };
 
-  useEffect(() => {
-    if (currentTurn === "enemy") {
-      const timer = setTimeout(() => {
-        const damage = Math.floor(Math.random() * 15) + 5;
-        const newPlayerHP = Math.max(0, playerHP - damage);
-        setPlayerHP(newPlayerHP);
-        setPlayerDamaged(true);
-        createExplosion(180, 240, damage);
-        setTimeout(() => setPlayerDamaged(false), 300);
-        setCurrentTurn("player");
+  // useEffect(() => {
+  //   if (currentTurn === "enemy") {
+  //     const timer = setTimeout(() => {
+  //       const damage = Math.floor(Math.random() * 15) + 5;
+  //       const newPlayerHP = Math.max(0, playerHP - damage);
+  //       setPlayerHP(newPlayerHP);
+  //       setPlayerDamaged(true);
+  //       createExplosion(180, 240, damage);
+  //       setTimeout(() => setPlayerDamaged(false), 300);
+  //       setCurrentTurn("player");
 
-        if (newPlayerHP === 0) {
-          setGameResult("lose");
-          setIsModalOpen(true);
-        }
-      }, 1000);
-      return () => clearTimeout(timer);
-    }
-  }, [currentTurn]);
+  //       if (newPlayerHP === 0) {
+  //         setGameResult("lose");
+  //         setIsModalOpen(true);
+  //       }
+  //     }, 1000);
+  //     return () => clearTimeout(timer);
+  //   }
+  // }, [currentTurn]);
 
   const handleModalClose = () => {
     setIsModalOpen(false);
     // Reset the game state
     setPlayerHP(500);
     setEnemyHP(500);
-    setCurrentTurn("player");
     setParticles([]);
     setGameResult(null);
   };
@@ -216,13 +240,13 @@ const CanvasBattleScene = ({ totalDamage }) => {
         height={360}
         className="w-full h-auto border-4 border-black rounded-md shadow-inner"
       />
-      <button
+      {/* <button
         onClick={handleAttack}
         disabled={currentTurn !== "player" || playerHP === 0 || enemyHP === 0}
         className="absolute bottom-4 left-1/2 transform -translate-x-1/2 py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors duration-200 disabled:bg-gray-400"
       >
         Attack
-      </button>
+      </button> */}
       <Modal
         isOpen={isModalOpen}
         onClose={handleModalClose}

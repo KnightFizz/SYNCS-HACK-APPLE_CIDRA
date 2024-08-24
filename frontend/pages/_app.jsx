@@ -16,6 +16,7 @@ const Block = ({ color, title, content, className, children }) => (
 export default function Home() {
   const [totalDamage, setTotalDamage] = useState(0);
   const [counts, setCounts] = useState({ squats: 0, curls: 0, lateral_raises: 0, punches: 0 }); // State to store counts
+  const [dmgcounts, setDmgCounts] = useState({ dmg: 0 });
 
   const handleTotalDamage = (damage) => {
     setTotalDamage(damage);
@@ -33,8 +34,20 @@ export default function Home() {
     return () => clearInterval(interval); // Cleanup on component unmount
   }, []);
 
-  console.log(totalDamage);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      fetch('http://127.0.0.1:5000/send_dmg_to_frontend')
+        .then(response => response.json())
+        .then(data => setDmgCounts(data))
+        .catch(error => console.error('Error fetching dmg total counts:', error));
+    }, 1000);
+
+    return () => clearInterval(interval); // Cleanup on component unmount
+  }, []);
+
   //console.log(counts); // Print the fetched counts
+
+  // console.log(dmgcounts);
 
   return (
     <div className="h-screen p-4 bg-gray-100">
@@ -59,7 +72,7 @@ export default function Home() {
               content="3/4 width block, 4/5 height of the right column"
               className="h-full p-0"
             >
-              <BattleScene totalDamage={totalDamage} />
+              <BattleScene damageReceived={dmgcounts} totalDamage={totalDamage} />
             </Block>
           </div>
 
