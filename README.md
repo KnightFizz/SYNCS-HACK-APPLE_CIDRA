@@ -1,13 +1,13 @@
-# SYNCSHACKAppleCidra :apple:
+# :green_apple:SYNCSHACKAppleCidra:apple:
 
 ## Members
 | Name    | Github Repo |
 | -------- | ------- |
-| Jiacheng Yu  | https://github.com/mryu888-plus    |
-| Yangqing Zheng | https://github.com/zyqgrace     |
-| Micheal Fang    | https://github.com/KnightFizz    |
-| James Zhao | https://github.com/cheese-zj |
-| Xinyi Chen | https://github.com/OrangeJellyfishCHEN |
+| Jiacheng Yu:tangerine:  | https://github.com/mryu888-plus    |
+| Yangqing Zheng:pig_nose: | https://github.com/zyqgrace     |
+| Micheal Fang:snowflake:    | https://github.com/KnightFizz    |
+| James Zhao:bulb: | https://github.com/cheese-zj |
+| Xinyi Chen:tea: | https://github.com/OrangeJellyfishCHEN |
 
 ## Project Description
 **Name: Not decided yet**   
