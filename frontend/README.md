@@ -1,1 +1,11 @@
-This is a starter template for [Learn Next.js](https://nextjs.org/learn).
+# How to Start
+Installation
+```shell
+npm install next react react-dom
+```
+
+run
+```shell
+npm run dev
+```
+
