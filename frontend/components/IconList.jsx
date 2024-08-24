@@ -2,6 +2,7 @@ import React, { useState, useCallback, useEffect } from "react";
 
 const IconList = () => {
   const [icons, setIcons] = useState([]);
+  const [isRemoving, setIsRemoving] = useState(false); // State to trigger the boom effect
   const availableIcons = ["🔥", "🧊", "🌪️", "🍀", "🌟"];
   const iconColors = {
     "🔥": "bg-orange-300",
@@ -11,14 +12,6 @@ const IconList = () => {
     "🌟": "bg-gradient-to-r from-purple-400 via-blue-700 to-purple-400",
   };
 
-  const iconDamage = {
-    "🔥": 10,
-    "🧊": 5,
-    "🌪️": 15,
-    "🍀": 16,
-    "🌟": 28,
-  };
-  const [selectedIndex, setSelectedIndex] = useState(0);
   const MAX_ICONS = 8;
 
   const addRandomIcon = useCallback(() => {
@@ -33,8 +26,11 @@ const IconList = () => {
   }, [icons]);
 
   const removeAllIcons = useCallback(() => {
-    setIcons([]);
-    setSelectedIndex(0);
+    setIsRemoving(true); // Trigger the boom effect
+    setTimeout(() => {
+      setIcons([]); // Remove all icons after the animation
+      setIsRemoving(false); // Reset the removing state
+    }, 600); // Duration matches the CSS animation time
   }, []);
 
   const handleJoyConInput = useCallback(() => {
@@ -50,7 +46,7 @@ const IconList = () => {
         addRandomIcon();
       }
     }
-  }, [icons, selectedIndex, addRandomIcon, removeAllIcons]);
+  }, [icons, addRandomIcon, removeAllIcons]);
 
   useEffect(() => {
     const onGamepadConnected = () => {
@@ -73,25 +69,22 @@ const IconList = () => {
 
   return (
     <div className="w-full flex flex-col items-center gap-4 p-4">
-      <div className="w-full grid grid-cols-8 gap-2 p-4 rounded-lg min-h-[100px] bg-none">
-        {icons.map((icon, index) => (
-          <div
-            key={icon.id}
-            className={`flex items-center justify-center aspect-square rounded-lg border-4 border-slate-800 drop-shadow-[6px_6px_0px_rgba(0,0,0,0.8)] transition-all duration-200 ${
-              iconColors[icon.name]
-            } ${icon.name === "🌟" ? "rainbow-shine" : ""}`}
-          >
-            <span className="icon text-4xl">{icon.name}</span>
-          </div>
-        ))}
-        {Array(MAX_ICONS - icons.length)
+      <div className={`w-full grid grid-cols-8 gap-2 p-4 rounded-lg min-h-[100px] bg-none ${isRemoving ? 'animate-boom' : ''}`}>
+        {Array(MAX_ICONS)
           .fill(null)
-          .map((_, index) => (
-            <div
-              key={`empty-${index}`}
-              className="aspect-square rounded-lg bg-gray-200 border-4 border-slate-900 drop-shadow-[3px_3px_0px_rgba(0,0,0,0.8)]"
-            />
-          ))}
+          .map((_, index) => {
+            const icon = icons[index];
+            return (
+              <div
+                key={index}
+                className={`flex items-center justify-center aspect-square rounded-lg border-4 border-slate-800 drop-shadow-[6px_6px_0px_rgba(0,0,0,0.8)] transition-all duration-200 ${
+                  icon ? iconColors[icon.name] : "bg-gray-200"
+                } ${icon?.name === "🌟" ? "rainbow-shine" : ""} ${isRemoving ? 'boom-effect' : ''}`}
+              >
+                {icon && <span className="icon text-4xl">{icon.name}</span>}
+              </div>
+            );
+          })}
       </div>
       <div
         className={`mt-2 px-3 py-1 rounded-full text-sm border-4 border-slate-900 drop-shadow-[3px_3px_0px_rgba(0,0,0,0.8)] ${
@@ -114,6 +107,25 @@ const IconList = () => {
         .rainbow-shine {
           background-size: 200% 200%;
           animation: rainbow-shine 1.5s ease infinite;
+        }
+
+        @keyframes boom {
+          0% {
+            transform: scale(1) rotate(0deg);
+            opacity: 1;
+          }
+          50% {
+            transform: scale(1.5) rotate(15deg);
+            opacity: 1;
+          }
+          100% {
+            transform: scale(0) rotate(45deg);
+            opacity: 0;
+          }
+        }
+
+        .boom-effect {
+          animation: boom 0.6s forwards;
         }
       `}</style>
     </div>
