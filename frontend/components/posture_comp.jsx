@@ -4,7 +4,7 @@ import ReactPlayer from 'react-player'
 
 const PostureComp = () => {
   const gridImages = [
-    { id: 1, src: "/Resources/GIF/Squat.GIF", alt: "Posture 1" },
+    { id: 1, src: "/Resources/GIF/Squat_Update.gif", alt: "Posture 1" },
     { id: 2, src: "/api/placeholder/100/100", alt: "Posture 2" },
     { id: 3, src: "/api/placeholder/100/100", alt: "Posture 3" },
     { id: 4, src: "/api/placeholder/100/100", alt: "Posture 4" },
@@ -14,9 +14,9 @@ const PostureComp = () => {
     <div className="h-full flex flex-col">
       <div className="flex-1 bg-gray-300 flex items-center justify-center mb-4 border-4 rounded-sm border-slate-800 max-h-72 overflow-hidden">
         {/*<p className="text-lg font-semibold">Webcam Placeholder</p>*/}
-        <ReactPlayer url='https://www.youtube.com/watch?v=jfKfPfyJRdk' />
+        {/*<ReactPlayer url='https://www.youtube.com/watch?v=jfKfPfyJRdk' />*/}
         {/*<img src="https://www.youtube.com/live/Vg13S-zzol0?si=8veHvAWMhCNm01Wr" alt="Video Stream" width="800" />*/}
-        {/*<WebcamLoader></WebcamLoader>*/}
+        <WebcamLoader></WebcamLoader>
       </div>
 
       {/* Grid view */}
