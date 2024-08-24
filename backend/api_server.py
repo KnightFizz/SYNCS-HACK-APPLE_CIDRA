@@ -10,6 +10,8 @@ from detection_model import get_counts, run_pose_detection
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 data_to_send = {}
+client_sockets = []  # List to store connected client sockets
+
 
 # Flask route to get exercise counts
 @app.route("/get_counts", methods=["GET"])
@@ -24,6 +26,19 @@ def video_feed():
     return Response(
         run_pose_detection(), mimetype="multipart/x-mixed-replace; boundary=frame"
     )
+
+
+# Function to send total_damage to all connected TCP clients
+def send_damage_to_clients(total_damage):
+    message = json.dumps({'totalDamage': total_damage}) + '\n'  # Serialize data
+    for client_socket in client_sockets:
+        try:
+            client_socket.sendall(message.encode('utf-8'))  # Send data to each client
+        except Exception as e:
+            print(f"Error sending data to client: {e}")
+            client_sockets.remove(client_socket)  # Remove client if sending fails
+
+
 @app.route("/read_damage", methods=["POST"])
 def read_damage_info():
     try:
@@ -32,6 +47,10 @@ def read_damage_info():
 
         # Just print the value, no further processing
         print(f"Received Total Damage: {total_damage}")
+
+        # Send the total_damage to all connected TCP clients
+        send_damage_to_clients(total_damage)
+
 
         return jsonify({'status': 'success', 'receivedDamage': total_damage}), 200
 
@@ -51,7 +70,7 @@ def receive_code():
 
     return jsonify({'status': 'success', 'received_code': code})
 
-# TCP Server: Function to send data to connected clients
+# TCP Server: Function to accept client connections and store sockets
 def tcp_server(host='0.0.0.0', port=5002):
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server_socket.bind((host, port))
@@ -61,20 +80,20 @@ def tcp_server(host='0.0.0.0', port=5002):
     while True:
         client_socket, client_address = server_socket.accept()
         print(f"Accepted connection from {client_address}")
+        client_sockets.append(client_socket)  # Store client socket
         threading.Thread(target=handle_client, args=(client_socket,)).start()
 
 def handle_client(client_socket):
     try:
         while True:
-            data = get_counts()  # Get the latest counts
-            json_data = json.dumps(data) + '\n'  # Serialize data and add a newline for separation
-            client_socket.sendall(json_data.encode('utf-8'))  # Send data over TCP
-            time.sleep(1)  # Send data every second
+            # Keep the connection alive
+            time.sleep(1)
     except Exception as e:
         print(f"Client disconnected: {e}")
     finally:
         client_socket.close()
-
+        client_sockets.remove(client_socket)  # Remove client from the list
+        
 # TCP Client: Function to connect to the server and receive data
 def tcp_client(target_host, port=5002):
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -86,6 +105,7 @@ def tcp_client(target_host, port=5002):
             data = client_socket.recv(1024).decode('utf-8')  # Receive data from server
             if data:
                 print("Received data from server:", data)
+                print(f"Target host is {target_host}")
             else:
                 break
     except Exception as e:
