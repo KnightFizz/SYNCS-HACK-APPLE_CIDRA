@@ -4,105 +4,89 @@ const IconList = () => {
   const [icons, setIcons] = useState([]);
   const availableIcons = ["🔥", "🧊", "🌪️", "💫"];
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const MAX_ICONS = 8;
 
   const addRandomIcon = useCallback(() => {
-    const randomIndex = Math.floor(Math.random() * availableIcons.length);
-    const newIcon = {
-      id: Date.now(),
-      name: availableIcons[randomIndex],
-    };
-    setIcons((prevIcons) => [...prevIcons, newIcon]);
-  }, []);
+    if (icons.length < MAX_ICONS) {
+      const randomIndex = Math.floor(Math.random() * availableIcons.length);
+      const newIcon = {
+        id: Date.now(),
+        name: availableIcons[randomIndex],
+      };
+      setIcons((prevIcons) => [...prevIcons, newIcon]);
+    }
+  }, [icons]);
 
-  const handleRemoveIcon = (id) => {
-    setIcons((prevIcons) => prevIcons.filter((icon) => icon.id !== id));
-  };
+  const removeAllIcons = useCallback(() => {
+    setIcons([]);
+    setSelectedIndex(0);
+  }, []);
 
   const handleJoyConInput = useCallback(() => {
     const gamepads = navigator.getGamepads();
     const joyCon = gamepads[0]; // Assuming the Joy-Con is the first connected gamepad
-
     if (joyCon) {
-      // D-Pad Right
-      if (joyCon.buttons[15]?.pressed) {
-        setSelectedIndex((prevIndex) =>
-          prevIndex < icons.length - 1 ? prevIndex + 1 : 0
-        );
-      }
-
-      // D-Pad Left
-      if (joyCon.buttons[14]?.pressed) {
-        setSelectedIndex((prevIndex) =>
-          prevIndex > 0 ? prevIndex - 1 : icons.length - 1
-        );
-      }
-
-      // A Button (Select/Remove)
+      // A Button (Select/Remove All)
       if (joyCon.buttons[0]?.pressed && icons.length > 0) {
-        handleRemoveIcon(icons[selectedIndex].id);
+        removeAllIcons();
       }
-
       // B Button (Add Icon)
       if (joyCon.buttons[1]?.pressed) {
         addRandomIcon();
       }
     }
-  }, [icons, selectedIndex, addRandomIcon]);
+  }, [icons, selectedIndex, addRandomIcon, removeAllIcons]);
 
   useEffect(() => {
-    // Log connection events
     const onGamepadConnected = () => {
       console.log("Gamepad connected");
     };
-
     const onGamepadDisconnected = () => {
       console.log("Gamepad disconnected");
     };
-
     window.addEventListener("gamepadconnected", onGamepadConnected);
     window.addEventListener("gamepaddisconnected", onGamepadDisconnected);
 
-    // Poll for gamepad input
     const interval = setInterval(() => {
       handleJoyConInput();
     }, 100); // Check every 100ms
 
-    // Cleanup
     return () => {
       window.removeEventListener("gamepadconnected", onGamepadConnected);
       window.removeEventListener("gamepaddisconnected", onGamepadDisconnected);
       clearInterval(interval);
     };
   }, [handleJoyConInput]);
-  
+
   return (
-    <div className="flex flex-col items-center gap-4 p-4 rounded-lg">
-      <div
-        className="flex flex-wrap gap-2 p-4 rounded-lg cursor-pointer min-h-[100px] min-w-[200px] justify-center items-center"
-        onClick={addRandomIcon}
-      >
-        {icons.map((icon) => (
+    <div className="w-full flex flex-col items-center gap-4 p-4">
+      <div className="w-full grid grid-cols-8 gap-2 p-4 rounded-lg min-h-[100px] bg-none">
+        {icons.map((icon, index) => (
           <div
             key={icon.id}
-            className="flex items-center justify-center w-20 h-20 rounded-lg bg-cyan-200 hover:rounded-3xl hover:bg-gray-800 transition-all duration-200"
-            onClick={(e) => {
-              e.stopPropagation(); // Prevent event bubbling
-              handleRemoveIcon(icon.id);
-            }}
+            className={`flex items-center justify-center aspect-square rounded-lg border-4 border-slate-800 drop-shadow-[6px_6px_0px_rgba(0,0,0,0.8)] bg-cyan-600 transition-all duration-200`}
           >
-            <span className="icon text-2xl">{icon.name}</span>
+            <span className="icon text-4xl">{icon.name}</span>
           </div>
         ))}
-        {icons.length === 0 && (
-          <p className="text-gray-400">Click to add an icon</p>
-        )}
+        {Array(MAX_ICONS - icons.length)
+          .fill(null)
+          .map((_, index) => (
+            <div
+              key={`empty-${index}`}
+              className="aspect-square rounded-lg bg-gray-200 border-4 border-slate-800 drop-shadow-[3px_3px_0px_rgba(0,0,0,0.8)]"
+            />
+          ))}
       </div>
-      <button
-        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors duration-200"
-        onClick={addRandomIcon}
+      <div
+        className={`mt-2 px-3 py-1 rounded-full text-sm ${
+          icons.length === MAX_ICONS
+            ? "bg-red-500 text-white"
+            : "bg-gray-200 text-gray-700"
+        } transition-colors duration-300`}
       >
-        Add Random Icon
-      </button>
+        Icons: {icons.length} / {MAX_ICONS}
+      </div>
     </div>
   );
 };
