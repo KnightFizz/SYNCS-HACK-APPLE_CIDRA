@@ -87,6 +87,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <h1>Exercise Detector</h1>
+<<<<<<< HEAD
         {!registeredUser ? (
           <div className="registration">
             <h2>Register User</h2>
