@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 
-// Dynamically import ReactPlayer with no SSR
-const ReactPlayer = dynamic(() => import('react-player'), { ssr: false });
+
+const ReactPlayer = dynamic(() => import('react-player/lazy'), { ssr: false });
 
 const WebcamLoader = () => {
   const [isClient, setIsClient] = useState(false);
@@ -31,13 +31,15 @@ const WebcamLoader = () => {
           <p className="text-sm">Please try again later.</p>
         </div>
       ) : isClient ? (
-        <div>
           <ReactPlayer
-            url="https://www.youtube.com/watch?v=jfKfPfyJRdk"
-            onReady={handleLoad} // Use onReady instead of onLoad
+            url="https://www.youtube.com/watch?v=jfKfPfyJRdkh"
+            onReady={handleLoad}
             onError={handleError}
+            playing={true} // Probably not using Youtube we can remove those two lines
+            controls={false} // Probably not using Youtube we can remove those two lines
+            volume={0}
+            mute={true}
           />
-        </div>
       ) : null}
 
       {/* Loading Spinner */}
