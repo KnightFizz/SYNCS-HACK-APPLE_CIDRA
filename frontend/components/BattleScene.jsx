@@ -18,6 +18,25 @@ const HPBar = ({ hp, maxHp, label, isPlayer }) => (
   </div>
 );
 
+const Modal = ({ isOpen, onClose, result }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-white p-8 rounded-lg shadow-lg text-center">
+        <h2 className="text-3xl font-bold mb-4">
+          {result === "win" ? "You Win!" : "You Lose!"}
+        </h2>
+        <p className="text-xl mb-6">
+          {result === "win"
+            ? "Congratulations on your victory!"
+            : "Better luck next time!"}
+        </p>
+      </div>
+    </div>
+  );
+};
+
 const CanvasBattleScene = ({ totalDamage }) => {
   const canvasRef = useRef(null);
   const [playerHP, setPlayerHP] = useState(500);
@@ -26,6 +45,8 @@ const CanvasBattleScene = ({ totalDamage }) => {
   const [playerDamaged, setPlayerDamaged] = useState(false);
   const [enemyDamaged, setEnemyDamaged] = useState(false);
   const [particles, setParticles] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [gameResult, setGameResult] = useState(null);
 
   useEffect(() => {
     const canvas = createCanvas(700, 390);
@@ -59,14 +80,14 @@ const CanvasBattleScene = ({ totalDamage }) => {
         ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
 
         // Flip the playerImage horizontally and reduce its size
-        ctx.save(); // Save the current context state
-        ctx.scale(-1, 1); // Flip horizontally
+        ctx.save();
+        ctx.scale(-1, 1);
         if (playerDamaged) {
           ctx.filter = "saturate(200%) hue-rotate(300deg)";
           ctx.translate(Math.random() * 4 - 2, Math.random() * 4 - 2);
         }
-        ctx.drawImage(playerImage, -270, canvas.height - 200, 150, 150); // Smaller size: 100x100
-        ctx.restore(); // Restore the original context state
+        ctx.drawImage(playerImage, -270, canvas.height - 200, 150, 150);
+        ctx.restore();
 
         // Draw enemy with damage effect
         ctx.save();
@@ -78,8 +99,8 @@ const CanvasBattleScene = ({ totalDamage }) => {
           enemyImage,
           canvas.width - 300,
           canvas.height - 300,
-          150, // Smaller width
-          150 // Smaller height
+          150,
+          150
         );
         ctx.restore();
 
@@ -121,24 +142,35 @@ const CanvasBattleScene = ({ totalDamage }) => {
     setParticles((prevParticles) => [...prevParticles, ...newParticles]);
   };
 
-  // Use totalDamage to reduce enemy HP and create explosion
   useEffect(() => {
     if (totalDamage > 0) {
-      setEnemyHP((prev) => Math.max(0, prev - totalDamage));
+      const newEnemyHP = Math.max(0, enemyHP - totalDamage);
+      setEnemyHP(newEnemyHP);
       setEnemyDamaged(true);
-      createExplosion(470, 140, totalDamage); // Adjust x, y to match enemy position
+      createExplosion(470, 140, totalDamage);
       setTimeout(() => setEnemyDamaged(false), 300);
+
+      if (newEnemyHP === 0) {
+        setGameResult("win");
+        setIsModalOpen(true);
+      }
     }
   }, [totalDamage]);
 
   const handleAttack = () => {
     if (currentTurn === "player") {
       const damage = Math.floor(Math.random() * 20) + 10;
-      setEnemyHP((prev) => Math.max(0, prev - damage));
+      const newEnemyHP = Math.max(0, enemyHP - damage);
+      setEnemyHP(newEnemyHP);
       setEnemyDamaged(true);
-      createExplosion(500, 140, damage); // Adjust x, y to match enemy position
+      createExplosion(500, 140, damage);
       setTimeout(() => setEnemyDamaged(false), 300);
       setCurrentTurn("enemy");
+
+      if (newEnemyHP === 0) {
+        setGameResult("win");
+        setIsModalOpen(true);
+      }
     }
   };
 
@@ -146,15 +178,31 @@ const CanvasBattleScene = ({ totalDamage }) => {
     if (currentTurn === "enemy") {
       const timer = setTimeout(() => {
         const damage = Math.floor(Math.random() * 15) + 5;
-        setPlayerHP((prev) => Math.max(0, prev - damage));
+        const newPlayerHP = Math.max(0, playerHP - damage);
+        setPlayerHP(newPlayerHP);
         setPlayerDamaged(true);
-        createExplosion(180, 240, damage); // Adjust x, y to match player position
+        createExplosion(180, 240, damage);
         setTimeout(() => setPlayerDamaged(false), 300);
         setCurrentTurn("player");
+
+        if (newPlayerHP === 0) {
+          setGameResult("lose");
+          setIsModalOpen(true);
+        }
       }, 1000);
       return () => clearTimeout(timer);
     }
   }, [currentTurn]);
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    // Reset the game state
+    setPlayerHP(500);
+    setEnemyHP(500);
+    setCurrentTurn("player");
+    setParticles([]);
+    setGameResult(null);
+  };
 
   return (
     <div className="relative">
@@ -175,6 +223,11 @@ const CanvasBattleScene = ({ totalDamage }) => {
       >
         Attack
       </button>
+      <Modal
+        isOpen={isModalOpen}
+        onClose={handleModalClose}
+        result={gameResult}
+      />
     </div>
   );
 };
