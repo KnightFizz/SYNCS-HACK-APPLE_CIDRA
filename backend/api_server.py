@@ -8,7 +8,7 @@ from detection_model import get_counts, run_pose_detection
 
 # Flask application
 app = Flask(__name__)
-CORS(app,resources={r"/*": {"origins": "http://localhost:3000"}})
+CORS(app, resources={r"/*": {"origins": "*"}})
 data_to_send = {}
 
 # Flask route to get exercise counts

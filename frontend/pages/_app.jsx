@@ -1,5 +1,4 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../styles/global.css";
 import PostureComp from "../components/posture_comp";
 import IconList from "../components/IconList";
@@ -16,11 +15,26 @@ const Block = ({ color, title, content, className, children }) => (
 
 export default function Home() {
   const [totalDamage, setTotalDamage] = useState(0);
+  const [counts, setCounts] = useState({ squats: 0, curls: 0, lateral_raises: 0, punches: 0 }); // State to store counts
 
   const handleTotalDamage = (damage) => {
     setTotalDamage(damage);
   };
+
+  // Fetch the counts from Flask API every second
+  useEffect(() => {
+    const interval = setInterval(() => {
+      fetch('http://127.0.0.1:5000/get_counts')
+        .then(response => response.json())
+        .then(data => setCounts(data))
+        .catch(error => console.error('Error fetching counts:', error));
+    }, 1000);
+
+    return () => clearInterval(interval); // Cleanup on component unmount
+  }, []);
+
   console.log(totalDamage);
+  console.log(counts); // Print the fetched counts
 
   return (
     <div className="h-screen p-4 bg-gray-100">
@@ -29,13 +43,13 @@ export default function Home() {
         <div className="col-span-4 h-full">
           <Block
             color="bg-blue-200"
-            title=""
-            content="1/4 width block, full height"
+            title="Exercise Counts"
             className="h-full"
           >
-            <PostureComp />
+          <PostureComp />
           </Block>
         </div>
+
         <div className="col-span-8 grid grid-rows-6 gap-4">
           {/* Block 2 - 3/4 width, 4/5 height */}
           <div className="row-span-10">
