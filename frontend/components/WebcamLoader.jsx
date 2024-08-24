@@ -1,8 +1,17 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import dynamic from 'next/dynamic';
+
+// Dynamically import ReactPlayer with no SSR
+const ReactPlayer = dynamic(() => import('react-player'), { ssr: false });
 
 const WebcamLoader = () => {
+  const [isClient, setIsClient] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true); // This ensures the component only renders on the client
+  }, []);
 
   const handleLoad = () => {
     setLoading(false);
@@ -21,20 +30,15 @@ const WebcamLoader = () => {
           <p className="text-xl font-bold">Unable to load the webcam feed</p>
           <p className="text-sm">Please try again later.</p>
         </div>
-      ) : (
-        <img
-          // Only for testing
-          // TODO: fix with Live Stream Error
-          src="https://www.youtube.com/live/Vg13S-zzol0?si=8veHvAWMhCNm01Wr"
-          // src="http://127.0.0.1:5000/video_feed"
-          alt="Video Stream"
-          className={`w-full transition-opacity duration-500 ease-in-out ${
-            loading ? 'opacity-0' : 'opacity-100'
-          }`}
-          onLoad={handleLoad}
-          onError={handleError}
-        />
-      )}
+      ) : isClient ? (
+        <div>
+          <ReactPlayer
+            url="https://www.youtube.com/watch?v=jfKfPfyJRdk"
+            onReady={handleLoad} // Use onReady instead of onLoad
+            onError={handleError}
+          />
+        </div>
+      ) : null}
 
       {/* Loading Spinner */}
       {loading && !error && (
