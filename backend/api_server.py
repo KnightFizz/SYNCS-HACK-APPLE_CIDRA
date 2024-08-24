@@ -39,10 +39,8 @@ def register_user():
 @app.route("/get_counts/<username>", methods=["GET"])
 def get_counts_route(username):
     if username in users:
-        counts = get_counts()
-        users[username]["score"] += counts["total"]  # Update user score
-        logging.debug(f"Counts for user '{username}': {counts}, Total score: {users[username]['score']}")
-        return jsonify({"username": username, "counts": counts, "score": users[username]["score"]}), 200
+        counts = get_counts(username)
+        return jsonify({"username": username, "counts": counts}), 200
     else:
         logging.debug(f"User '{username}' not found.")
         return jsonify({"error": "User not found."}), 404
@@ -52,42 +50,10 @@ def get_counts_route(username):
 def video_feed(username):
     if username in users:
         logging.debug(f"Starting video feed for user '{username}'")
-        return Response(
-            run_pose_detection(), mimetype="multipart/x-mixed-replace; boundary=frame"
-        )
+        return Response(run_pose_detection(username), mimetype="multipart/x-mixed-replace; boundary=frame")
     else:
         logging.debug(f"User '{username}' not found for video feed.")
         return jsonify({"error": "User not found."}), 404
-
-# SocketIO event for joining a competition room
-@socketio.on('join_competition')
-def handle_join(data):
-    username = data.get("username")
-    if username in users:
-        join_room('competition')
-        logging.debug(f"User '{username}' joined the competition.")
-        emit('user_joined', {'username': username, 'score': users[username]['score']}, room='competition')
-    else:
-        logging.debug(f"User '{username}' not found.")
-        emit('error', {'message': 'User not found'})
-
-# SocketIO event for updating scores
-@socketio.on('update_score')
-def handle_update_score(data):
-    username = data.get("username")
-    if username in users:
-        users[username]["score"] = data.get("score")
-        logging.debug(f"Score updated for user '{username}': {users[username]['score']}")
-        emit('score_update', {'username': username, 'score': users[username]["score"]}, room='competition')
-    else:
-        logging.debug(f"User '{username}' not found for score update.")
-        emit('error', {'message': 'User not found'})
-
-# Flask route to get all users' scores (for online competition)
-@app.route("/get_scores", methods=["GET"])
-def get_scores():
-    logging.debug("Fetching all users' scores.")
-    return jsonify(users), 200
 
 @socketio.on('connect')
 def on_connect():
