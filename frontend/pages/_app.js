@@ -20,17 +20,29 @@ export default function Home() {
             color="bg-blue-200"
             title="Block 1"
             content="1/4 width block in the top section"
+<<<<<<< HEAD
+            className="col-span-3"
+=======
             className="col-span-4"
+>>>>>>> main
           />
           <Block
             color="bg-green-200"
             title="Block 2"
             content="3/4 width block in the top section"
+<<<<<<< HEAD
+            className="col-span-9"
+=======
             className="col-span-8"
+>>>>>>> main
           />
         </div>
       </div>
 
+<<<<<<< HEAD
+      {/* Bottom section - 1/5 of the screen */}
+=======
+>>>>>>> main
       <div className="h-1/5 bg-gray-300 p-4">
         <div className="h-full grid grid-cols-10 gap-4">
           <Block
