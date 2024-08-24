@@ -24,8 +24,9 @@ function App() {
         <div className="counts">
           <p>Squats: {counts.squats}</p>
           <p>curls: {counts.curls}</p>
+          <p>jpunches:  {counts.punches}</p>
           <p>lateral_raises: {counts.lateral_raises}</p>
-          <p>shoulder_presses: {counts.shoulder_presses}</p>
+
         </div>
       </header>
     </div>

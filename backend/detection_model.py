@@ -35,15 +35,18 @@ curl_position = None
 lateral_position = None
 shoulder_position = None
 
+# Initialize count and position for straight punch
+punch_count = 0
+punch_position = None
 
-# Function to run pose detection
+# Add Straight Punch detection in the pose detection function
 def run_pose_detection():
-    global squat_count, curl_count, lateral_raise_count, shoulder_press_count
-    global squat_position, curl_position, lateral_position, shoulder_position
+    global squat_count, curl_count, lateral_raise_count, shoulder_press_count, high_kick_count, punch_count
+    global squat_position, curl_position, lateral_position, shoulder_position, high_kick_position, punch_position
 
     cap = cv2.VideoCapture(0)
 
-    with mp_pose.Pose(min_detection_confidence=0.3, min_tracking_confidence=0.3) as pose:
+    with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as pose:
         while cap.isOpened():
             ret, frame = cap.read()
 
@@ -75,29 +78,14 @@ def run_pose_detection():
                 left_ankle = [landmarks[mp_pose.PoseLandmark.LEFT_ANKLE.value].x,
                               landmarks[mp_pose.PoseLandmark.LEFT_ANKLE.value].y]
 
-               # Curl detection with wrist position and stricter angle checking
+
+                # Curl detection with wrist position and stricter angle checking
                 curl_angle = calculate_angle(left_shoulder, left_elbow, left_wrist)
                 if curl_angle < 50 and left_wrist[1] > left_shoulder[1]:  # Wrist below shoulder
                     curl_position = "curl"
                 if curl_position == "curl" and curl_angle > 160:
                     curl_position = "uncurl"
                     curl_count += 1
-
-                # # Shoulder Press detection with wrist position
-                # shoulder_press_angle = calculate_angle(left_shoulder, left_elbow, left_wrist)
-                # if shoulder_press_angle < 40 and left_wrist[1] < left_shoulder[1]:  # Wrist above shoulder
-                #     shoulder_position = "up"
-                # if shoulder_position == "up" and shoulder_press_angle > 160:  # Full arm extension
-                #     shoulder_position = "down"
-                #     shoulder_press_count += 1
-
-                # Squat detection with stricter angles
-                squat_angle = calculate_angle(left_hip, left_knee, left_ankle)
-                if squat_angle < 130:
-                    squat_position = "down"
-                if squat_position == "down" and squat_angle > 170:  # Ensure full extension
-                    squat_position = "up"
-                    squat_count += 1
 
                 # Lateral Raise detection with hand position
                 lateral_angle = calculate_angle(left_hip, left_shoulder, left_elbow)
@@ -107,6 +95,16 @@ def run_pose_detection():
                     lateral_position = "down"
                     lateral_raise_count += 1
 
+                # Squat detection with stricter angles
+                squat_angle = calculate_angle(left_hip, left_knee, left_ankle)
+
+                # Check if the ankle is below the hip for squat detection
+                if squat_angle < 120 and left_ankle[1] > left_hip[1]:  # Ankle below hip level (squat)
+                    squat_position = "down"
+                    print(f"the squat angle is {squat_angle}")
+                if squat_position == "down" and squat_angle > 170:  # Ensure full extension
+                    squat_position = "up"
+                    squat_count += 1
 
             except:
                 pass
@@ -126,10 +124,12 @@ def run_pose_detection():
     cap.release()
     cv2.destroyAllWindows()
 
+
 # Function to get current counts
 def get_counts():
     return {
         "squats": squat_count,
         "curls": curl_count,
-        "lateral_raises": lateral_raise_count
+        "lateral_raises": lateral_raise_count,
+        "punches": punch_count
     }
