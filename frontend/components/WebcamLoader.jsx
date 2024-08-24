@@ -12,11 +12,7 @@ const WebcamLoader = () => {
   useEffect(() => {
     setIsClient(true); // This ensures the component only renders on the client
   }, []);
-
-  const handleLoad = () => {
-    setLoading(false);
-  };
-
+  
   const handleError = () => {
     setLoading(false);
     setError(true);
@@ -30,24 +26,8 @@ const WebcamLoader = () => {
           <p className="text-xl font-bold">Unable to load the webcam feed</p>
           <p className="text-sm">Please try again later.</p>
         </div>
-      ) : isClient ? (
-          <ReactPlayer
-            url="https://www.youtube.com/watch?v=jfKfPfyJRdkh"
-            onReady={handleLoad}
-            onError={handleError}
-            playing={true} // Probably not using Youtube we can remove those two lines
-            controls={false} // Probably not using Youtube we can remove those two lines
-            volume={0}
-            mute={true}
-          />
-      ) : null}
-
-      {/* Loading Spinner */}
-      {loading && !error && (
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="loader border-4 border-t-4 border-gray-300 border-t-blue-500 rounded-full w-12 h-12 animate-spin"></div>
-        </div>
-      )}
+      ) : < img src="http://127.0.0.1:5000/video_feed" alt="Video Stream" />}
+      
     </div>
   );
 };
