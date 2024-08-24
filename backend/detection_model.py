@@ -1,18 +1,14 @@
-# detection_model.py
-
 import cv2
 import mediapipe as mp
 import numpy as np
+
 
 # Initialize Mediapipe Pose and drawing utilities
 mp_pose = mp.solutions.pose
 mp_drawing = mp.solutions.drawing_utils
 
-# Initialize counts and states
-squat_count = 0
-curl_count = 0
-squat_position = None
-curl_position = None
+# Global dictionary to store user states
+user_states = {}
 
 # Function to calculate angle between three points
 def calculate_angle(a, b, c):
@@ -29,29 +25,40 @@ def calculate_angle(a, b, c):
     return angle
 
 # Function to run pose detection
-def run_pose_detection():
-    global squat_count, curl_count, squat_position, curl_position
-
+def run_pose_detection(username):
+    # Attempt to open a new camera instance for each user
     cap = cv2.VideoCapture(0)
+    if not cap.isOpened():
+        print(f"Error: Unable to open webcam for user {username}")
+        return
+
+    # Initialize user state if not already present
+    if username not in user_states:
+        user_states[username] = {
+            "squat_count": 0,
+            "curl_count": 0,
+            "squat_position": None,
+            "curl_position": None,
+            "cap": cap
+        }
+    else:
+        user_states[username]["cap"] = cap
 
     with mp_pose.Pose(min_detection_confidence=0.3, min_tracking_confidence=0.3) as pose:
+
         while cap.isOpened():
             ret, frame = cap.read()
-
             if not ret:
                 break
 
             image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             image.flags.writeable = False
-
             results = pose.process(image)
-
             image.flags.writeable = True
             image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
 
             try:
                 landmarks = results.pose_landmarks.landmark
-
                 left_shoulder = [
                     landmarks[mp_pose.PoseLandmark.LEFT_SHOULDER.value].x,
                     landmarks[mp_pose.PoseLandmark.LEFT_SHOULDER.value].y,
@@ -77,22 +84,24 @@ def run_pose_detection():
                     landmarks[mp_pose.PoseLandmark.LEFT_ANKLE.value].y,
                 ]
 
+                # Calculate angles for squat and curl
                 squat_angle = calculate_angle(left_hip, left_knee, left_ankle)
-                if squat_angle < 140:
-                    squat_position = "down"
-                if squat_position == "down" and squat_angle > 160:
-                    squat_position = "up"
-                    squat_count += 1
-
                 curl_angle = calculate_angle(left_shoulder, left_elbow, left_wrist)
-                if curl_angle < 50:
-                    curl_position = "curl"
-                if curl_position == "curl" and curl_angle > 160:
-                    curl_position = "uncurl"
-                    curl_count += 1
 
-            except:
-                pass
+                if squat_angle < 140:
+                    user_states[username]['squat_position'] = "down"
+                if user_states[username]['squat_position'] == "down" and squat_angle > 160:
+                    user_states[username]['squat_position'] = "up"
+                    user_states[username]['squat_count'] += 1
+
+                if curl_angle < 50:
+                    user_states[username]['curl_position'] = "curl"
+                if user_states[username]['curl_position'] == "curl" and curl_angle > 160:
+                    user_states[username]['curl_position'] = "uncurl"
+                    user_states[username]['curl_count'] += 1
+
+            except Exception as e:
+                print(f"Error processing frame for {username}: {e}")
 
             mp_drawing.draw_landmarks(
                 image,
@@ -108,7 +117,12 @@ def run_pose_detection():
 
     cap.release()
     cv2.destroyAllWindows()
+    del user_states[username]['cap']
+
 
 # Function to get current counts
-def get_counts():
-    return {"squats": squat_count, "curls": curl_count}
+def get_counts(username):
+    if username in user_states:
+        return {"squats": user_states[username]['squat_count'], "curls": user_states[username]['curl_count']}
+    else:
+        return {"error": "User not found"}

@@ -5,5 +5,5 @@ npm install next react react-dom
 ```
 run
 ```shell
- npm run dev
+npm run dev
 ```
