@@ -18,7 +18,7 @@ const HPBar = ({ hp, maxHp, label, isPlayer }) => (
   </div>
 );
 
-const CanvasBattleScene = () => {
+const CanvasBattleScene = ({ totalDamage }) => {
   const canvasRef = useRef(null);
   const [playerHP, setPlayerHP] = useState(300);
   const [enemyHP, setEnemyHP] = useState(300);
@@ -70,6 +70,13 @@ const CanvasBattleScene = () => {
       cancelAnimationFrame(animationFrameId);
     };
   }, [currentTurn]);
+
+  // Use totalDamage to reduce enemy HP
+  useEffect(() => {
+    if (totalDamage > 0) {
+      setEnemyHP((prev) => Math.max(0, prev - totalDamage));
+    }
+  }, [totalDamage]);
 
   const handleAttack = () => {
     if (currentTurn === "player") {

@@ -1,8 +1,8 @@
 import React from "react";
+import { useState } from "react"; 
 import "../styles/global.css";
 import PostureComp from "../components/posture_comp";
 import IconList from "../components/IconList";
-import HealthBarHandler from "../components/HealthBarHandler";
 import BattleScene from "../components/BattleScene.jsx";
 
 const Block = ({ color, title, content, className, children }) => (
@@ -15,6 +15,13 @@ const Block = ({ color, title, content, className, children }) => (
 );
 
 export default function Home() {
+  const [totalDamage, setTotalDamage] = useState(0);
+
+  const handleTotalDamage = (damage) => {
+    setTotalDamage(damage);
+  };
+  console.log(totalDamage);
+
   return (
     <div className="h-screen p-4 bg-gray-100">
       <div className="h-full grid grid-cols-12 gap-4">
@@ -38,7 +45,7 @@ export default function Home() {
               content="3/4 width block, 4/5 height of the right column"
               className="h-full p-0"
             >
-              <BattleScene />
+              <BattleScene totalDamage={totalDamage} />
             </Block>
           </div>
 
@@ -52,7 +59,7 @@ export default function Home() {
                 content="4/5 width of bottom row"
                 className="h-full"
               >
-                <IconList />
+                <IconList onTotalDamage={handleTotalDamage}/>
               </Block>
             </div>
           </div>
