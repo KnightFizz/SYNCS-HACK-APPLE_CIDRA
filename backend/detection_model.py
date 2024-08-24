@@ -1,3 +1,5 @@
+# detection_model.py
+
 import cv2
 import mediapipe as mp
 import numpy as np
@@ -12,16 +14,13 @@ curl_count = 0
 squat_position = None
 curl_position = None
 
-
 # Function to calculate angle between three points
 def calculate_angle(a, b, c):
     a = np.array(a)  # First point
     b = np.array(b)  # Second point (the angle vertex)
     c = np.array(c)  # Third point
 
-    radians = np.arctan2(c[1] - b[1], c[0] - b[0]) - np.arctan2(
-        a[1] - b[1], a[0] - b[0]
-    )
+    radians = np.arctan2(c[1] - b[1], c[0] - b[0]) - np.arctan2(a[1] - b[1], a[0] - b[0])
     angle = np.abs(radians * 180.0 / np.pi)
 
     if angle > 180.0:
@@ -29,37 +28,30 @@ def calculate_angle(a, b, c):
 
     return angle
 
-
 # Function to run pose detection
 def run_pose_detection():
     global squat_count, curl_count, squat_position, curl_position
 
-    # OpenCV video capture (for webcam)
     cap = cv2.VideoCapture(0)
 
-    # Set up the Mediapipe Pose model
-    with mp_pose.Pose(
-        min_detection_confidence=0.3, min_tracking_confidence=0.3
-    ) as pose:
+    with mp_pose.Pose(min_detection_confidence=0.3, min_tracking_confidence=0.3) as pose:
         while cap.isOpened():
             ret, frame = cap.read()
 
-            # Convert the image to RGB
+            if not ret:
+                break
+
             image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             image.flags.writeable = False
 
-            # Get the pose landmarks
             results = pose.process(image)
 
-            # Convert the image back to BGR for rendering
             image.flags.writeable = True
             image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
 
-            # Extract pose landmarks
             try:
                 landmarks = results.pose_landmarks.landmark
 
-                # Get coordinates for relevant body parts
                 left_shoulder = [
                     landmarks[mp_pose.PoseLandmark.LEFT_SHOULDER.value].x,
                     landmarks[mp_pose.PoseLandmark.LEFT_SHOULDER.value].y,
@@ -85,7 +77,6 @@ def run_pose_detection():
                     landmarks[mp_pose.PoseLandmark.LEFT_ANKLE.value].y,
                 ]
 
-                # Squat Detection
                 squat_angle = calculate_angle(left_hip, left_knee, left_ankle)
                 if squat_angle < 140:
                     squat_position = "down"
@@ -93,7 +84,6 @@ def run_pose_detection():
                     squat_position = "up"
                     squat_count += 1
 
-                # Bicep Curl Detection (using shoulder, elbow, wrist)
                 curl_angle = calculate_angle(left_shoulder, left_elbow, left_wrist)
                 if curl_angle < 50:
                     curl_position = "curl"
@@ -104,31 +94,21 @@ def run_pose_detection():
             except:
                 pass
 
-            # Render the pose landmarks on the video
             mp_drawing.draw_landmarks(
                 image,
                 results.pose_landmarks,
                 mp_pose.POSE_CONNECTIONS,
-                mp_drawing.DrawingSpec(
-                    color=(245, 117, 66), thickness=2, circle_radius=2
-                ),
-                mp_drawing.DrawingSpec(
-                    color=(245, 66, 230), thickness=2, circle_radius=2
-                ),
+                mp_drawing.DrawingSpec(color=(245, 117, 66), thickness=2, circle_radius=2),
+                mp_drawing.DrawingSpec(color=(245, 66, 230), thickness=2, circle_radius=2),
             )
 
-            # Display the video frame
-            cv2.imshow("Exercise Detector", image)
+            ret, buffer = cv2.imencode(".jpg", image)
+            frame = buffer.tobytes()
+            yield b"--frame\r\n" b"Content-Type: image/jpeg\r\n\r\n" + frame + b"\r\n"
 
-            # Press 'q' to quit
-            if cv2.waitKey(10) & 0xFF == ord("q"):
-                break
-
-    # Release video capture and close windows
     cap.release()
     cv2.destroyAllWindows()
 
-
-# Function to get counts (used by the API)
+# Function to get current counts
 def get_counts():
     return {"squats": squat_count, "curls": curl_count}
