@@ -24,6 +24,20 @@ def video_feed():
     return Response(
         run_pose_detection(), mimetype="multipart/x-mixed-replace; boundary=frame"
     )
+@app.route("/read_damage", methods=["POST"])
+def read_damage_info():
+    try:
+        data = request.json  # Receive JSON data from the request
+        total_damage = data.get('totalDamage', 0)  # Extract the 'totalDamage' field from the JSON data
+
+        # Just print the value, no further processing
+        print(f"Received Total Damage: {total_damage}")
+
+        return jsonify({'status': 'success', 'receivedDamage': total_damage}), 200
+
+    except Exception as e:
+        print(f"Error reading value: {e}")
+        return jsonify({'status': 'error', 'message': 'Failed to read damage info'}), 500
 
 # New Flask route to receive code from frontend
 @app.route("/send_code", methods=["POST"])
