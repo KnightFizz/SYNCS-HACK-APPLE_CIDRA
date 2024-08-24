@@ -34,8 +34,8 @@ const CanvasBattleScene = ({ totalDamage }) => {
 
     const loadAssets = async () => {
       const backgroundImage = await loadImage("/Resources/bg/woodfield.webp");
-      const playerImage = await loadImage("/Resources/GIF/Squat_Update.gif");
-      const enemyImage = await loadImage("/Resources/GIF/Squat_Update.gif");
+      const playerImage = await loadImage("/Resources/SVG/toast.svg");
+      const enemyImage = await loadImage("/Resources/SVG/egg.svg");
 
       const drawParticles = () => {
         particles.forEach((particle, index) => {
@@ -58,13 +58,13 @@ const CanvasBattleScene = ({ totalDamage }) => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
 
-        ctx.beginPath();
-        ctx.moveTo(0, canvas.height);
-        ctx.lineTo(canvas.width / 2, canvas.height * 0.7);
-        ctx.lineTo(canvas.width, canvas.height);
-        ctx.fillStyle = "rgba(100, 100, 100, 0.5)";
-        ctx.fill();
+        // Flip the playerImage horizontally and reduce its size
+        ctx.save(); // Save the current context state
+        ctx.scale(-1, 1); // Flip horizontally
+        ctx.drawImage(playerImage, -220, canvas.height - 200, 150, 150); // Smaller size: 100x100
+        ctx.restore(); // Restore the original context state
 
+<<<<<<< HEAD
         // Draw player with damage effect
         ctx.save();
         if (playerDamaged) {
@@ -80,12 +80,15 @@ const CanvasBattleScene = ({ totalDamage }) => {
           ctx.filter = "saturate(200%) hue-rotate(150deg)";
           ctx.translate(Math.random() * 4 - 2, Math.random() * 4 - 2);
         }
+=======
+        // Draw the enemy image smaller
+>>>>>>> df79acf914d9d73e0a091f4edb63da9caff13cf1
         ctx.drawImage(
           enemyImage,
-          canvas.width - 330,
-          canvas.height - 350,
-          200,
-          200
+          canvas.width - 230,
+          canvas.height - 300,
+          150,  // Smaller width
+          150   // Smaller height
         );
         ctx.restore();
 
