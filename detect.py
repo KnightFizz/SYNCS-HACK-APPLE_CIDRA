@@ -26,12 +26,14 @@ cap = cv2.VideoCapture(0)
 # Initialize counts and states
 squat_count = 0
 curl_count = 0
+press_count = 0
 
 squat_position = None
 curl_position = None
+press_position = None
 
 # Set up the Mediapipe Pose model
-with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as pose:
+with mp_pose.Pose(min_detection_confidence=0.8, min_tracking_confidence=0.8) as pose:
     while cap.isOpened():
         ret, frame = cap.read()
         
@@ -80,9 +82,17 @@ with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as 
                 curl_position = "uncurl"
                 curl_count += 1
 
+            # Overhead Shoulder Press Detection (using shoulder, elbow, wrist)
+            if left_elbow[1] < left_shoulder[1]:  # If elbow is above shoulder
+                press_position = "press"
+            if press_position == "press" and left_elbow[1] > left_shoulder[1]:  # Return to shoulder height
+                press_position = "reset"
+                press_count += 1
+
             # Display the counts
             cv2.putText(image, f"Squats: {squat_count}", (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
             cv2.putText(image, f"Curls: {curl_count}", (10, 100), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
+            cv2.putText(image, f"Presses: {press_count}", (10, 150), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
 
         except:
             pass
