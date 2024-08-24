@@ -1,4 +1,4 @@
-# SYNCSHACKAppleCidra
+# SYNCSHACKAppleCidra :apple:
 
 ## Members
 | Name    | Github Repo |
@@ -10,7 +10,11 @@
 | Xinyi Chen | https://github.com/OrangeJellyfishCHEN |
 
 ## Project Description
-### Product Name
+**Name: Not decided yet**   
+Inspiration
+Our project draws inspiration from Nintendo's Pokémon Card Game and Ring Fit Adventure. We aim to blend fitness with competitive gameplay, using exercise to power players' abilities in a virtual card battle. This hybrid approach engages users physically while fostering social interaction and healthy competition.
+
+Fitness Battle Game is an innovative multiplayer game that leverages webcam-based exercise tracking to reward players with in-game attributes. These attributes, represented as game icons, can be used in a turn-based battle system where players compete to defeat each other. The project aligns with the theme, "Software that brings people together," by encouraging collaboration and friendly competition through physical activity, blending fitness and entertainment in a fun, social experience.
 
 ### Technology Stack
 - Python packages && repos:
@@ -21,9 +25,6 @@
 
 #### Models
 The pose detection used in this project is based on Google's Mediapipe framework, which is a cross-platform machine learning library designed to identify multiple pose positions. Mediapipe provides robust tools for real-time pose tracking and recognition, enabling applications that rely on accurate body pose estimations to identify various body positions and movements.
-
-
-### Brief:
 
 ### Functions:
 - Players use their webcam to detect and track their exercise postures(squat && curl currently). Each successful posture grants a player an icon with specific attributes that can be used in a battle.
