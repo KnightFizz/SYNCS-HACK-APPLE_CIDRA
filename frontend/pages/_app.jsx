@@ -2,10 +2,12 @@ import React from "react";
 import "../styles/global.css";
 import PostureComp from "../components/posture_comp";
 import IconList from "../components/IconList";
+import HealthBarHandler from "../components/HealthBarHandler";
+import BattleScene from "../components/BattleScene.jsx";
 
 const Block = ({ color, title, content, className, children }) => (
   <div
-    className={`${color} ${className} border-4 border-slate-800 drop-shadow-[6px_6px_0px_rgba(0,0,0,0.8)] p-4 rounded-md shadow-md flex flex-col`}
+    className={`${color} ${className} border-4 border-slate-800 drop-shadow-[6px_6px_0px_rgba(0,0,0,0.8)] p-3 rounded-md shadow-md flex flex-col`}
   >
     <h2 className="text-xl font-bold mb-2">{title}</h2>
     {children || <p className="text-center">{content}</p>}
@@ -32,14 +34,16 @@ export default function Home() {
           <div className="row-span-10">
             <Block
               color="bg-green-200"
-              title="Block 2"
+              title=""
               content="3/4 width block, 4/5 height of the right column"
-              className="h-full"
-            />
+              className="h-full p-0"
+            >
+              <BattleScene />
+            </Block>
           </div>
 
           {/* Bottom row for Block 3 and 4 - 1/5 height */}
-          <div className="row-span-4 grid grid-cols-10 gap-4">
+          <div className="row-span-10 grid grid-cols-10 gap-4">
             {/* Block 3 - 4/5 width of the bottom row */}
             <div className="col-span-10">
               <Block
