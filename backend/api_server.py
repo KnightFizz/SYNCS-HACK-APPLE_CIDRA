@@ -1,9 +1,9 @@
 from flask import Flask, Response, jsonify, request
 from flask_cors import CORS
+from detection_model import get_counts, run_pose_detection
 import threading
 import requests
 import time
-import detection_model
 import argparse
 
 # Flask application
@@ -13,7 +13,7 @@ CORS(app)
 # Flask route to get exercise counts
 @app.route("/get_counts", methods=["GET"])
 def get_counts_route():
-    return jsonify(detection_model.get_counts())
+    return jsonify(get_counts())
 
 # Flask route to stream video
 @app.route("/video_feed")
@@ -69,7 +69,7 @@ if __name__ == "__main__":
 
     # Check if a target host is specified, if so, send data to it
     if target_host:
-        data_to_send = detection_model.get_counts()  # Get initial data to send
+        data_to_send = get_counts()  # Get initial data to send
         send_dict(target_host, target_port, data_to_send)
     else:
         print("Running as host only. Not sending data to another device.")
