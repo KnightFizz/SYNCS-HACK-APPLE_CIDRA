@@ -1,0 +1,136 @@
+Index: frontend/README.md
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>This is a starter template for [Learn Next.js](https://nextjs.org/learn).\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/frontend/README.md b/frontend/README.md
+--- a/frontend/README.md	(revision 0297e6f74f33b64a3e283fee2a41891dfb815d36)
++++ b/frontend/README.md	(date 1724470881217)
+@@ -1,1 +1,11 @@
+-This is a starter template for [Learn Next.js](https://nextjs.org/learn).
++# How to Start
++Installation
++```shell
++npm install next react react-dom
++```
++
++run
++```shell
++npm run dev
++```
++
+Index: frontend/package.json
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>{\n  \"private\": true,\n  \"scripts\": {\n    \"build\": \"next build\",\n    \"dev\": \"next dev\",\n    \"start\": \"next start\"\n  },\n  \"dependencies\": {\n    \"next\": \"latest\",\n    \"react\": \"18.2.0\",\n    \"react-dom\": \"18.2.0\"\n  },\n  \"engines\": {\n    \"node\": \">=18\"\n  }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/frontend/package.json b/frontend/package.json
+--- a/frontend/package.json	(revision 0297e6f74f33b64a3e283fee2a41891dfb815d36)
++++ b/frontend/package.json	(date 1724472173431)
+@@ -6,9 +6,10 @@
+     "start": "next start"
+   },
+   "dependencies": {
+-    "next": "latest",
+-    "react": "18.2.0",
+-    "react-dom": "18.2.0"
++    "next": "^14.2.6",
++    "react": "^18.2.0",
++    "react-dom": "^18.2.0",
++    "react-webcam": "^7.2.0"
+   },
+   "engines": {
+     "node": ">=18"
+Index: README.md
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+># :green_apple:SYNCSHACKAppleCidra:apple:\n\n## Members\n| Name    | Github Repo |\n| -------- | ------- |\n| Jiacheng Yu :tangerine:  | https://github.com/mryu888-plus    |\n| Yangqing Zheng :pig_nose: | https://github.com/zyqgrace     |\n| Micheal Fang :snowflake:    | https://github.com/KnightFizz    |\n| James Zhao :bulb: | https://github.com/cheese-zj |\n| Xinyi Chen :tea: | https://github.com/OrangeJellyfishCHEN |\n\n## Project Description\n**Name: Not decided yet**   \nInspiration\nOur project draws inspiration from Nintendo's Pokémon Card Game and Ring Fit Adventure. We aim to blend fitness with competitive gameplay, using exercise to power players' abilities in a virtual card battle. This hybrid approach engages users physically while fostering social interaction and healthy competition.\n\nFitness Battle Game is an innovative multiplayer game that leverages webcam-based exercise tracking to reward players with in-game attributes. These attributes, represented as game icons, can be used in a turn-based battle system where players compete to defeat each other. The project aligns with the theme, \"Software that brings people together,\" by encouraging collaboration and friendly competition through physical activity, blending fitness and entertainment in a fun, social experience.\n\n### Technology Stack\n- Python packages && repos:\n  - https://github.com/tocoteron/joycon-python\n  - https://github.com/google/mediapipe\n- Flask\n- Next.js\n\n#### Models\nThe pose detection used in this project is based on Google's Mediapipe framework, which is a cross-platform machine learning library designed to identify multiple pose positions. Mediapipe provides robust tools for real-time pose tracking and recognition, enabling applications that rely on accurate body pose estimations to identify various body positions and movements.\n\n### Functions:\n- Players use their webcam to detect and track their exercise postures(squat && curl currently). Each successful posture grants a player an icon with specific attributes that can be used in a battle.\n- The game requires at least two players, each participating from their own computer.\n- Players can compete against each other using the icons they have earned. The icons grant abilities or attacks during the battle, similar to a Pokémon card competition.\n- A Hit Points（HP）bar is displayed for each player, and the game ends when one player's HP reaches zero.\n- (Optional) Before entering the game, players can customize their avatar or character.\n\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/README.md b/README.md
+--- a/README.md	(revision 0297e6f74f33b64a3e283fee2a41891dfb815d36)
++++ b/README.md	(date 1724472693480)
+@@ -7,7 +7,7 @@
+ | Yangqing Zheng :pig_nose: | https://github.com/zyqgrace     |
+ | Micheal Fang :snowflake:    | https://github.com/KnightFizz    |
+ | James Zhao :bulb: | https://github.com/cheese-zj |
+-| Xinyi Chen :tea: | https://github.com/OrangeJellyfishCHEN |
++| Xinyi Chen :: | https://github.com/OrangeJellyfishCHEN |
+ 
+ ## Project Description
+ **Name: Not decided yet**   
+Index: frontend/package-lock.json
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>{\n  \"name\": \"nextjs-blog\",\n  \"lockfileVersion\": 3,\n  \"requires\": true,\n  \"packages\": {\n    \"\": {\n      \"dependencies\": {\n        \"next\": \"latest\",\n        \"react\": \"18.2.0\",\n        \"react-dom\": \"18.2.0\"\n      },\n      \"engines\": {\n        \"node\": \">=18\"\n      }\n    },\n    \"node_modules/@next/env\": {\n      \"version\": \"14.2.6\",\n      \"resolved\": \"https://registry.npmjs.org/@next/env/-/env-14.2.6.tgz\",\n      \"integrity\": \"sha512-bs5DFKV+08EjWrl8EB+KKqev1ZTNONH1vFCaHh911aaB362NnP32UDTbE9VQhyiAgbFqJsfDkSxFERNDDb3j0g==\",\n      \"license\": \"MIT\"\n    },\n    \"node_modules/@next/swc-darwin-arm64\": {\n      \"version\": \"14.2.6\",\n      \"resolved\": \"https://registry.npmjs.org/@next/swc-darwin-arm64/-/swc-darwin-arm64-14.2.6.tgz\",\n      \"integrity\": \"sha512-BtJZb+hYXGaVJJivpnDoi3JFVn80SHKCiiRUW3kk1SY6UCUy5dWFFSbh+tGi5lHAughzeduMyxbLt3pspvXNSg==\",\n      \"cpu\": [\n        \"arm64\"\n      ],\n      \"license\": \"MIT\",\n      \"optional\": true,\n      \"os\": [\n        \"darwin\"\n      ],\n      \"engines\": {\n        \"node\": \">= 10\"\n      }\n    },\n    \"node_modules/@next/swc-darwin-x64\": {\n      \"version\": \"14.2.6\",\n      \"resolved\": \"https://registry.npmjs.org/@next/swc-darwin-x64/-/swc-darwin-x64-14.2.6.tgz\",\n      \"integrity\": \"sha512-ZHRbGpH6KHarzm6qEeXKSElSXh8dS2DtDPjQt3IMwY8QVk7GbdDYjvV4NgSnDA9huGpGgnyy3tH8i5yHCqVkiQ==\",\n      \"cpu\": [\n        \"x64\"\n      ],\n      \"license\": \"MIT\",\n      \"optional\": true,\n      \"os\": [\n        \"darwin\"\n      ],\n      \"engines\": {\n        \"node\": \">= 10\"\n      }\n    },\n    \"node_modules/@next/swc-linux-arm64-gnu\": {\n      \"version\": \"14.2.6\",\n      \"resolved\": \"https://registry.npmjs.org/@next/swc-linux-arm64-gnu/-/swc-linux-arm64-gnu-14.2.6.tgz\",\n      \"integrity\": \"sha512-O4HqUEe3ZvKshXHcDUXn1OybN4cSZg7ZdwHJMGCXSUEVUqGTJVsOh17smqilIjooP/sIJksgl+1kcf2IWMZWHg==\",\n      \"cpu\": [\n        \"arm64\"\n      ],\n      \"license\": \"MIT\",\n      \"optional\": true,\n      \"os\": [\n        \"linux\"\n      ],\n      \"engines\": {\n        \"node\": \">= 10\"\n      }\n    },\n    \"node_modules/@next/swc-linux-arm64-musl\": {\n      \"version\": \"14.2.6\",\n      \"resolved\": \"https://registry.npmjs.org/@next/swc-linux-arm64-musl/-/swc-linux-arm64-musl-14.2.6.tgz\",\n      \"integrity\": \"sha512-xUcdhr2hfalG8RDDGSFxQ75yOG894UlmFS4K2M0jLrUhauRBGOtUOxoDVwiIIuZQwZ3Y5hDsazNjdYGB0cQ9yQ==\",\n      \"cpu\": [\n        \"arm64\"\n      ],\n      \"license\": \"MIT\",\n      \"optional\": true,\n      \"os\": [\n        \"linux\"\n      ],\n      \"engines\": {\n        \"node\": \">= 10\"\n      }\n    },\n    \"node_modules/@next/swc-linux-x64-gnu\": {\n      \"version\": \"14.2.6\",\n      \"resolved\": \"https://registry.npmjs.org/@next/swc-linux-x64-gnu/-/swc-linux-x64-gnu-14.2.6.tgz\",\n      \"integrity\": \"sha512-InosKxw8UMcA/wEib5n2QttwHSKHZHNSbGcMepBM0CTcNwpxWzX32KETmwbhKod3zrS8n1vJ+DuJKbL9ZAB0Ag==\",\n      \"cpu\": [\n        \"x64\"\n      ],\n      \"license\": \"MIT\",\n      \"optional\": true,\n      \"os\": [\n        \"linux\"\n      ],\n      \"engines\": {\n        \"node\": \">= 10\"\n      }\n    },\n    \"node_modules/@next/swc-linux-x64-musl\": {\n      \"version\": \"14.2.6\",\n      \"resolved\": \"https://registry.npmjs.org/@next/swc-linux-x64-musl/-/swc-linux-x64-musl-14.2.6.tgz\",\n      \"integrity\": \"sha512-d4QXfJmt5pGJ7cG8qwxKSBnO5AXuKAFYxV7qyDRHnUNvY/dgDh+oX292gATpB2AAHgjdHd5ks1wXxIEj6muLUQ==\",\n      \"cpu\": [\n        \"x64\"\n      ],\n      \"license\": \"MIT\",\n      \"optional\": true,\n      \"os\": [\n        \"linux\"\n      ],\n      \"engines\": {\n        \"node\": \">= 10\"\n      }\n    },\n    \"node_modules/@next/swc-win32-arm64-msvc\": {\n      \"version\": \"14.2.6\",\n      \"resolved\": \"https://registry.npmjs.org/@next/swc-win32-arm64-msvc/-/swc-win32-arm64-msvc-14.2.6.tgz\",\n      \"integrity\": \"sha512-AlgIhk4/G+PzOG1qdF1b05uKTMsuRatFlFzAi5G8RZ9h67CVSSuZSbqGHbJDlcV1tZPxq/d4G0q6qcHDKWf4aQ==\",\n      \"cpu\": [\n        \"arm64\"\n      ],\n      \"license\": \"MIT\",\n      \"optional\": true,\n      \"os\": [\n        \"win32\"\n      ],\n      \"engines\": {\n        \"node\": \">= 10\"\n      }\n    },\n    \"node_modules/@next/swc-win32-ia32-msvc\": {\n      \"version\": \"14.2.6\",\n      \"resolved\": \"https://registry.npmjs.org/@next/swc-win32-ia32-msvc/-/swc-win32-ia32-msvc-14.2.6.tgz\",\n      \"integrity\": \"sha512-hNukAxq7hu4o5/UjPp5jqoBEtrpCbOmnUqZSKNJG8GrUVzfq0ucdhQFVrHcLRMvQcwqqDh1a5AJN9ORnNDpgBQ==\",\n      \"cpu\": [\n        \"ia32\"\n      ],\n      \"license\": \"MIT\",\n      \"optional\": true,\n      \"os\": [\n        \"win32\"\n      ],\n      \"engines\": {\n        \"node\": \">= 10\"\n      }\n    },\n    \"node_modules/@next/swc-win32-x64-msvc\": {\n      \"version\": \"14.2.6\",\n      \"resolved\": \"https://registry.npmjs.org/@next/swc-win32-x64-msvc/-/swc-win32-x64-msvc-14.2.6.tgz\",\n      \"integrity\": \"sha512-NANtw+ead1rSDK1jxmzq3TYkl03UNK2KHqUYf1nIhNci6NkeqBD4s1njSzYGIlSHxCK+wSaL8RXZm4v+NF/pMw==\",\n      \"cpu\": [\n        \"x64\"\n      ],\n      \"license\": \"MIT\",\n      \"optional\": true,\n      \"os\": [\n        \"win32\"\n      ],\n      \"engines\": {\n        \"node\": \">= 10\"\n      }\n    },\n    \"node_modules/@swc/counter\": {\n      \"version\": \"0.1.3\",\n      \"resolved\": \"https://registry.npmjs.org/@swc/counter/-/counter-0.1.3.tgz\",\n      \"integrity\": \"sha512-e2BR4lsJkkRlKZ/qCHPw9ZaSxc0MVUd7gtbtaB7aMvHeJVYe8sOB8DBZkP2DtISHGSku9sCK6T6cnY0CtXrOCQ==\",\n      \"license\": \"Apache-2.0\"\n    },\n    \"node_modules/@swc/helpers\": {\n      \"version\": \"0.5.5\",\n      \"resolved\": \"https://registry.npmjs.org/@swc/helpers/-/helpers-0.5.5.tgz\",\n      \"integrity\": \"sha512-KGYxvIOXcceOAbEk4bi/dVLEK9z8sZ0uBB3Il5b1rhfClSpcX0yfRO0KmTkqR2cnQDymwLB+25ZyMzICg/cm/A==\",\n      \"license\": \"Apache-2.0\",\n      \"dependencies\": {\n        \"@swc/counter\": \"^0.1.3\",\n        \"tslib\": \"^2.4.0\"\n      }\n    },\n    \"node_modules/busboy\": {\n      \"version\": \"1.6.0\",\n      \"resolved\": \"https://registry.npmjs.org/busboy/-/busboy-1.6.0.tgz\",\n      \"integrity\": \"sha512-8SFQbg/0hQ9xy3UNTB0YEnsNBbWfhf7RtnzpL7TkBiTBRfrQ9Fxcnz7VJsleJpyp6rVLvXiuORqjlHi5q+PYuA==\",\n      \"dependencies\": {\n        \"streamsearch\": \"^1.1.0\"\n      },\n      \"engines\": {\n        \"node\": \">=10.16.0\"\n      }\n    },\n    \"node_modules/caniuse-lite\": {\n      \"version\": \"1.0.30001651\",\n      \"resolved\": \"https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001651.tgz\",\n      \"integrity\": \"sha512-9Cf+Xv1jJNe1xPZLGuUXLNkE1BoDkqRqYyFJ9TDYSqhduqA4hu4oR9HluGoWYQC/aj8WHjsGVV+bwkh0+tegRg==\",\n      \"funding\": [\n        {\n          \"type\": \"opencollective\",\n          \"url\": \"https://opencollective.com/browserslist\"\n        },\n        {\n          \"type\": \"tidelift\",\n          \"url\": \"https://tidelift.com/funding/github/npm/caniuse-lite\"\n        },\n        {\n          \"type\": \"github\",\n          \"url\": \"https://github.com/sponsors/ai\"\n        }\n      ],\n      \"license\": \"CC-BY-4.0\"\n    },\n    \"node_modules/client-only\": {\n      \"version\": \"0.0.1\",\n      \"resolved\": \"https://registry.npmjs.org/client-only/-/client-only-0.0.1.tgz\",\n      \"integrity\": \"sha512-IV3Ou0jSMzZrd3pZ48nLkT9DA7Ag1pnPzaiQhpW7c3RbcqqzvzzVu+L8gfqMp/8IM2MQtSiqaCxrrcfu8I8rMA==\",\n      \"license\": \"MIT\"\n    },\n    \"node_modules/graceful-fs\": {\n      \"version\": \"4.2.11\",\n      \"resolved\": \"https://registry.npmjs.org/graceful-fs/-/graceful-fs-4.2.11.tgz\",\n      \"integrity\": \"sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ==\",\n      \"license\": \"ISC\"\n    },\n    \"node_modules/js-tokens\": {\n      \"version\": \"4.0.0\",\n      \"resolved\": \"https://registry.npmjs.org/js-tokens/-/js-tokens-4.0.0.tgz\",\n      \"integrity\": \"sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==\",\n      \"license\": \"MIT\"\n    },\n    \"node_modules/loose-envify\": {\n      \"version\": \"1.4.0\",\n      \"resolved\": \"https://registry.npmjs.org/loose-envify/-/loose-envify-1.4.0.tgz\",\n      \"integrity\": \"sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==\",\n      \"license\": \"MIT\",\n      \"dependencies\": {\n        \"js-tokens\": \"^3.0.0 || ^4.0.0\"\n      },\n      \"bin\": {\n        \"loose-envify\": \"cli.js\"\n      }\n    },\n    \"node_modules/nanoid\": {\n      \"version\": \"3.3.7\",\n      \"resolved\": \"https://registry.npmjs.org/nanoid/-/nanoid-3.3.7.tgz\",\n      \"integrity\": \"sha512-eSRppjcPIatRIMC1U6UngP8XFcz8MQWGQdt1MTBQ7NaAmvXDfvNxbvWV3x2y6CdEUciCSsDHDQZbhYaB8QEo2g==\",\n      \"funding\": [\n        {\n          \"type\": \"github\",\n          \"url\": \"https://github.com/sponsors/ai\"\n        }\n      ],\n      \"license\": \"MIT\",\n      \"bin\": {\n        \"nanoid\": \"bin/nanoid.cjs\"\n      },\n      \"engines\": {\n        \"node\": \"^10 || ^12 || ^13.7 || ^14 || >=15.0.1\"\n      }\n    },\n    \"node_modules/next\": {\n      \"version\": \"14.2.6\",\n      \"resolved\": \"https://registry.npmjs.org/next/-/next-14.2.6.tgz\",\n      \"integrity\": \"sha512-57Su7RqXs5CBKKKOagt8gPhMM3CpjgbeQhrtei2KLAA1vTNm7jfKS+uDARkSW8ZETUflDCBIsUKGSyQdRs4U4g==\",\n      \"license\": \"MIT\",\n      \"dependencies\": {\n        \"@next/env\": \"14.2.6\",\n        \"@swc/helpers\": \"0.5.5\",\n        \"busboy\": \"1.6.0\",\n        \"caniuse-lite\": \"^1.0.30001579\",\n        \"graceful-fs\": \"^4.2.11\",\n        \"postcss\": \"8.4.31\",\n        \"styled-jsx\": \"5.1.1\"\n      },\n      \"bin\": {\n        \"next\": \"dist/bin/next\"\n      },\n      \"engines\": {\n        \"node\": \">=18.17.0\"\n      },\n      \"optionalDependencies\": {\n        \"@next/swc-darwin-arm64\": \"14.2.6\",\n        \"@next/swc-darwin-x64\": \"14.2.6\",\n        \"@next/swc-linux-arm64-gnu\": \"14.2.6\",\n        \"@next/swc-linux-arm64-musl\": \"14.2.6\",\n        \"@next/swc-linux-x64-gnu\": \"14.2.6\",\n        \"@next/swc-linux-x64-musl\": \"14.2.6\",\n        \"@next/swc-win32-arm64-msvc\": \"14.2.6\",\n        \"@next/swc-win32-ia32-msvc\": \"14.2.6\",\n        \"@next/swc-win32-x64-msvc\": \"14.2.6\"\n      },\n      \"peerDependencies\": {\n        \"@opentelemetry/api\": \"^1.1.0\",\n        \"@playwright/test\": \"^1.41.2\",\n        \"react\": \"^18.2.0\",\n        \"react-dom\": \"^18.2.0\",\n        \"sass\": \"^1.3.0\"\n      },\n      \"peerDependenciesMeta\": {\n        \"@opentelemetry/api\": {\n          \"optional\": true\n        },\n        \"@playwright/test\": {\n          \"optional\": true\n        },\n        \"sass\": {\n          \"optional\": true\n        }\n      }\n    },\n    \"node_modules/picocolors\": {\n      \"version\": \"1.0.1\",\n      \"resolved\": \"https://registry.npmjs.org/picocolors/-/picocolors-1.0.1.tgz\",\n      \"integrity\": \"sha512-anP1Z8qwhkbmu7MFP5iTt+wQKXgwzf7zTyGlcdzabySa9vd0Xt392U0rVmz9poOaBj0uHJKyyo9/upk0HrEQew==\",\n      \"license\": \"ISC\"\n    },\n    \"node_modules/postcss\": {\n      \"version\": \"8.4.31\",\n      \"resolved\": \"https://registry.npmjs.org/postcss/-/postcss-8.4.31.tgz\",\n      \"integrity\": \"sha512-PS08Iboia9mts/2ygV3eLpY5ghnUcfLV/EXTOW1E2qYxJKGGBUtNjN76FYHnMs36RmARn41bC0AZmn+rR0OVpQ==\",\n      \"funding\": [\n        {\n          \"type\": \"opencollective\",\n          \"url\": \"https://opencollective.com/postcss/\"\n        },\n        {\n          \"type\": \"tidelift\",\n          \"url\": \"https://tidelift.com/funding/github/npm/postcss\"\n        },\n        {\n          \"type\": \"github\",\n          \"url\": \"https://github.com/sponsors/ai\"\n        }\n      ],\n      \"license\": \"MIT\",\n      \"dependencies\": {\n        \"nanoid\": \"^3.3.6\",\n        \"picocolors\": \"^1.0.0\",\n        \"source-map-js\": \"^1.0.2\"\n      },\n      \"engines\": {\n        \"node\": \"^10 || ^12 || >=14\"\n      }\n    },\n    \"node_modules/react\": {\n      \"version\": \"18.2.0\",\n      \"resolved\": \"https://registry.npmjs.org/react/-/react-18.2.0.tgz\",\n      \"integrity\": \"sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==\",\n      \"license\": \"MIT\",\n      \"dependencies\": {\n        \"loose-envify\": \"^1.1.0\"\n      },\n      \"engines\": {\n        \"node\": \">=0.10.0\"\n      }\n    },\n    \"node_modules/react-dom\": {\n      \"version\": \"18.2.0\",\n      \"resolved\": \"https://registry.npmjs.org/react-dom/-/react-dom-18.2.0.tgz\",\n      \"integrity\": \"sha512-6IMTriUmvsjHUjNtEDudZfuDQUoWXVxKHhlEGSk81n4YFS+r/Kl99wXiwlVXtPBtJenozv2P+hxDsw9eA7Xo6g==\",\n      \"license\": \"MIT\",\n      \"dependencies\": {\n        \"loose-envify\": \"^1.1.0\",\n        \"scheduler\": \"^0.23.0\"\n      },\n      \"peerDependencies\": {\n        \"react\": \"^18.2.0\"\n      }\n    },\n    \"node_modules/scheduler\": {\n      \"version\": \"0.23.2\",\n      \"resolved\": \"https://registry.npmjs.org/scheduler/-/scheduler-0.23.2.tgz\",\n      \"integrity\": \"sha512-UOShsPwz7NrMUqhR6t0hWjFduvOzbtv7toDH1/hIrfRNIDBnnBWd0CwJTGvTpngVlmwGCdP9/Zl/tVrDqcuYzQ==\",\n      \"license\": \"MIT\",\n      \"dependencies\": {\n        \"loose-envify\": \"^1.1.0\"\n      }\n    },\n    \"node_modules/source-map-js\": {\n      \"version\": \"1.2.0\",\n      \"resolved\": \"https://registry.npmjs.org/source-map-js/-/source-map-js-1.2.0.tgz\",\n      \"integrity\": \"sha512-itJW8lvSA0TXEphiRoawsCksnlf8SyvmFzIhltqAHluXd88pkCd+cXJVHTDwdCr0IzwptSm035IHQktUu1QUMg==\",\n      \"license\": \"BSD-3-Clause\",\n      \"engines\": {\n        \"node\": \">=0.10.0\"\n      }\n    },\n    \"node_modules/streamsearch\": {\n      \"version\": \"1.1.0\",\n      \"resolved\": \"https://registry.npmjs.org/streamsearch/-/streamsearch-1.1.0.tgz\",\n      \"integrity\": \"sha512-Mcc5wHehp9aXz1ax6bZUyY5afg9u2rv5cqQI3mRrYkGC8rW2hM02jWuwjtL++LS5qinSyhj2QfLyNsuc+VsExg==\",\n      \"engines\": {\n        \"node\": \">=10.0.0\"\n      }\n    },\n    \"node_modules/styled-jsx\": {\n      \"version\": \"5.1.1\",\n      \"resolved\": \"https://registry.npmjs.org/styled-jsx/-/styled-jsx-5.1.1.tgz\",\n      \"integrity\": \"sha512-pW7uC1l4mBZ8ugbiZrcIsiIvVx1UmTfw7UkC3Um2tmfUq9Bhk8IiyEIPl6F8agHgjzku6j0xQEZbfA5uSgSaCw==\",\n      \"license\": \"MIT\",\n      \"dependencies\": {\n        \"client-only\": \"0.0.1\"\n      },\n      \"engines\": {\n        \"node\": \">= 12.0.0\"\n      },\n      \"peerDependencies\": {\n        \"react\": \">= 16.8.0 || 17.x.x || ^18.0.0-0\"\n      },\n      \"peerDependenciesMeta\": {\n        \"@babel/core\": {\n          \"optional\": true\n        },\n        \"babel-plugin-macros\": {\n          \"optional\": true\n        }\n      }\n    },\n    \"node_modules/tslib\": {\n      \"version\": \"2.7.0\",\n      \"resolved\": \"https://registry.npmjs.org/tslib/-/tslib-2.7.0.tgz\",\n      \"integrity\": \"sha512-gLXCKdN1/j47AiHiOkJN69hJmcbGTHI0ImLmbYLHykhgeN0jVGola9yVjFgzCUklsZQMW55o+dW7IXv3RCXDzA==\",\n      \"license\": \"0BSD\"\n    }\n  }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/frontend/package-lock.json b/frontend/package-lock.json
+--- a/frontend/package-lock.json	(revision 0297e6f74f33b64a3e283fee2a41891dfb815d36)
++++ b/frontend/package-lock.json	(date 1724472173437)
+@@ -1,13 +1,14 @@
+ {
+-  "name": "nextjs-blog",
++  "name": "frontend",
+   "lockfileVersion": 3,
+   "requires": true,
+   "packages": {
+     "": {
+       "dependencies": {
+-        "next": "latest",
+-        "react": "18.2.0",
+-        "react-dom": "18.2.0"
++        "next": "^14.2.6",
++        "react": "^18.2.0",
++        "react-dom": "^18.2.0",
++        "react-webcam": "^7.2.0"
+       },
+       "engines": {
+         "node": ">=18"
+@@ -262,7 +263,6 @@
+       "version": "14.2.6",
+       "resolved": "https://registry.npmjs.org/next/-/next-14.2.6.tgz",
+       "integrity": "sha512-57Su7RqXs5CBKKKOagt8gPhMM3CpjgbeQhrtei2KLAA1vTNm7jfKS+uDARkSW8ZETUflDCBIsUKGSyQdRs4U4g==",
+-      "license": "MIT",
+       "dependencies": {
+         "@next/env": "14.2.6",
+         "@swc/helpers": "0.5.5",
+@@ -346,7 +346,6 @@
+       "version": "18.2.0",
+       "resolved": "https://registry.npmjs.org/react/-/react-18.2.0.tgz",
+       "integrity": "sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==",
+-      "license": "MIT",
+       "dependencies": {
+         "loose-envify": "^1.1.0"
+       },
+@@ -358,7 +357,6 @@
+       "version": "18.2.0",
+       "resolved": "https://registry.npmjs.org/react-dom/-/react-dom-18.2.0.tgz",
+       "integrity": "sha512-6IMTriUmvsjHUjNtEDudZfuDQUoWXVxKHhlEGSk81n4YFS+r/Kl99wXiwlVXtPBtJenozv2P+hxDsw9eA7Xo6g==",
+-      "license": "MIT",
+       "dependencies": {
+         "loose-envify": "^1.1.0",
+         "scheduler": "^0.23.0"
+@@ -367,6 +365,16 @@
+         "react": "^18.2.0"
+       }
+     },
++    "node_modules/react-webcam": {
++      "version": "7.2.0",
++      "resolved": "https://registry.npmjs.org/react-webcam/-/react-webcam-7.2.0.tgz",
++      "integrity": "sha512-xkrzYPqa1ag2DP+2Q/kLKBmCIfEx49bVdgCCCcZf88oF+0NPEbkwYk3/s/C7Zy0mhM8k+hpdNkBLzxg8H0aWcg==",
++      "license": "MIT",
++      "peerDependencies": {
++        "react": ">=16.2.0",
++        "react-dom": ">=16.2.0"
++      }
++    },
+     "node_modules/scheduler": {
+       "version": "0.23.2",
+       "resolved": "https://registry.npmjs.org/scheduler/-/scheduler-0.23.2.tgz",
