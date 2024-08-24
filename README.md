@@ -3,11 +3,11 @@
 ## Members
 | Name    | Github Repo |
 | -------- | ------- |
-| Jiacheng Yu:tangerine:  | https://github.com/mryu888-plus    |
-| Yangqing Zheng:pig_nose: | https://github.com/zyqgrace     |
-| Micheal Fang:snowflake:    | https://github.com/KnightFizz    |
-| James Zhao:bulb: | https://github.com/cheese-zj |
-| Xinyi Chen:tea: | https://github.com/OrangeJellyfishCHEN |
+| Jiacheng Yu :tangerine:  | https://github.com/mryu888-plus    |
+| Yangqing Zheng :pig_nose: | https://github.com/zyqgrace     |
+| Micheal Fang :snowflake:    | https://github.com/KnightFizz    |
+| James Zhao :bulb: | https://github.com/cheese-zj |
+| Xinyi Chen :tea: | https://github.com/OrangeJellyfishCHEN |
 
 ## Project Description
 **Name: Not decided yet**   
