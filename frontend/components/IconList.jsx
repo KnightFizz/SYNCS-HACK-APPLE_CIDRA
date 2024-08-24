@@ -18,15 +18,15 @@ const IconList = () => {
   };
 
   return (
-    <div className="flex flex-col items-center gap-4 p-4 bg-gray-100 rounded-lg">
+    <div className="flex flex-col items-center gap-4 p-4 rounded-lg">
       <div
-        className="flex flex-wrap gap-2 p-4 bg-white rounded-lg shadow-md cursor-pointer min-h-[100px] min-w-[200px] justify-center items-center"
+        className="flex flex-wrap gap-2 p-4 rounded-lg cursor-pointer min-h-[100px] min-w-[200px] justify-center items-center"
         onClick={addRandomIcon}
       >
         {icons.map((icon) => (
           <div
             key={icon.id}
-            className="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full shadow hover:bg-gray-200 transition-colors duration-200"
+            className="flex items-center justify-center w-20 h-20 rounded-lg bg-cyan-200 hover:rounded-3xl hover:bg-gray-800 transition-all duration-200"
             onClick={(e) => {
               e.stopPropagation(); // Prevent event bubbling
               handleRemoveIcon(icon.id);
