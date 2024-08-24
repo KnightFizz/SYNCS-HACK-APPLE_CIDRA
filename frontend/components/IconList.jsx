@@ -12,6 +12,14 @@ const IconList = () => {
     "🌟": "bg-gradient-to-r from-purple-400 via-blue-700 to-purple-400",
   };
 
+  const iconDamage = {
+    "🔥": 15,
+    "🧊": 12,
+    "🌪️": 20,
+    "🍀": 15,
+    "🌟": 30,
+  };
+
   const MAX_ICONS = 8;
 
   const addRandomIcon = useCallback(() => {
