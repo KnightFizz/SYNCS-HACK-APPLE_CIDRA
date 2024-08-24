@@ -1,4 +1,4 @@
-# :green_apple:SYNCSHACKAppleCidra:apple:
+# :apple:SYNCSHACKAppleCidra:beverage_box:
 
 ## Members
 | Name    | Github Repo |
