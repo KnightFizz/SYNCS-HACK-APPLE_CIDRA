@@ -1,8 +1,9 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 
 const IconList = () => {
   const [icons, setIcons] = useState([]);
   const availableIcons = ["🔥", "🧊", "🌪️", "💫"];
+  const [selectedIndex, setSelectedIndex] = useState(0);
 
   const addRandomIcon = useCallback(() => {
     const randomIndex = Math.floor(Math.random() * availableIcons.length);
@@ -17,6 +18,63 @@ const IconList = () => {
     setIcons((prevIcons) => prevIcons.filter((icon) => icon.id !== id));
   };
 
+  const handleJoyConInput = useCallback(() => {
+    const gamepads = navigator.getGamepads();
+    const joyCon = gamepads[0]; // Assuming the Joy-Con is the first connected gamepad
+
+    if (joyCon) {
+      // D-Pad Right
+      if (joyCon.buttons[15]?.pressed) {
+        setSelectedIndex((prevIndex) =>
+          prevIndex < icons.length - 1 ? prevIndex + 1 : 0
+        );
+      }
+
+      // D-Pad Left
+      if (joyCon.buttons[14]?.pressed) {
+        setSelectedIndex((prevIndex) =>
+          prevIndex > 0 ? prevIndex - 1 : icons.length - 1
+        );
+      }
+
+      // A Button (Select/Remove)
+      if (joyCon.buttons[0]?.pressed && icons.length > 0) {
+        handleRemoveIcon(icons[selectedIndex].id);
+      }
+
+      // B Button (Add Icon)
+      if (joyCon.buttons[1]?.pressed) {
+        addRandomIcon();
+      }
+    }
+  }, [icons, selectedIndex, addRandomIcon]);
+
+  useEffect(() => {
+    // Log connection events
+    const onGamepadConnected = () => {
+      console.log("Gamepad connected");
+    };
+
+    const onGamepadDisconnected = () => {
+      console.log("Gamepad disconnected");
+    };
+
+    window.addEventListener("gamepadconnected", onGamepadConnected);
+    window.addEventListener("gamepaddisconnected", onGamepadDisconnected);
+
+    // Poll for gamepad input
+    const interval = setInterval(() => {
+      handleJoyConInput();
+    }, 100); // Check every 100ms
+
+    // Cleanup
+    return () => {
+      window.removeEventListener("gamepadconnected", onGamepadConnected);
+      window.removeEventListener("gamepaddisconnected", onGamepadDisconnected);
+      clearInterval(interval);
+    };
+  }, [handleJoyConInput]);
+  
   return (
     <div className="flex flex-col items-center gap-4 p-4 rounded-lg">
       <div
