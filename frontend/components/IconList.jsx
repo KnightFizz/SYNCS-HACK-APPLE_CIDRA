@@ -2,7 +2,9 @@ import React, { useState, useCallback, useEffect } from "react";
 
 const IconList = ({ onTotalDamage }) => {
   const [icons, setIcons] = useState([]);  
-  const [isRemoving, setIsRemoving] = useState(false); // State to trigger the boom effect
+  const [isRemoving, setIsRemoving] = useState(false);
+  
+  const fakeList = [1, 1, 0, 0, 0]; // Example list
   const availableIcons = ["🔥", "🧊", "🌪️", "🍀", "🌟"];
   const iconColors = {
     "🔥": "bg-orange-300",
@@ -22,6 +24,20 @@ const IconList = ({ onTotalDamage }) => {
 
   const MAX_ICONS = 8;
 
+  // Initialize icons based on fakeList
+  useEffect(() => {
+    const initializedIcons = fakeList.reduce((acc, value, index) => {
+      if (value === 1) {
+        acc.push({
+          id: Date.now() + index, // Unique ID for each icon
+          name: availableIcons[index],
+        });
+      }
+      return acc;
+    }, []);
+    setIcons(initializedIcons);
+  }, []); // Empty dependency array to run only once on mount
+
   const addRandomIcon = useCallback(() => {
     if (icons.length < MAX_ICONS) {
       const randomIndex = Math.floor(Math.random() * availableIcons.length);
@@ -38,15 +54,12 @@ const IconList = ({ onTotalDamage }) => {
       (acc, icon) => acc + iconDamage[icon.name],
       0
     );
-    // Trigger any further actions with the damage, like updating state in the parent
     onTotalDamage(totalDamage);
-    // Send the total damage to the backend
-    console.log("sjkkajslkajs");
     sendTotalDamageToBackend(totalDamage);
-    setIsRemoving(true); // Trigger the boom effect
+    setIsRemoving(true);
     setTimeout(() => {
-      setIcons([]); // Remove all icons after the animation
-      setIsRemoving(false); // Reset the removing state
+      setIcons([]);
+      setIsRemoving(false);
     }, 600);
   }, [icons, onTotalDamage]);
 
@@ -64,40 +77,41 @@ const IconList = ({ onTotalDamage }) => {
       console.log('Response from server:', data);
     } catch (error) {
       console.error('Error sending total damage to backend:', error);
-    }};
-    const handleJoyConInput = useCallback(() => {
-      const gamepads = navigator.getGamepads();
-      const joyCon = gamepads[0]; // Assuming the Joy-Con is the first connected gamepad
-      if (joyCon) {
-        // A Button (Select/Remove All)
-        if (joyCon.buttons[0]?.pressed && icons.length > 0) {
-          removeAllIcons();
-        }
-        // B Button (Add Icon)
-        if (joyCon.buttons[1]?.pressed) {
-          addRandomIcon();
-        }
+    }
+  };
+
+  const handleJoyConInput = useCallback(() => {
+    const gamepads = navigator.getGamepads();
+    const joyCon = gamepads[0];
+    if (joyCon) {
+      if (joyCon.buttons[0]?.pressed && icons.length > 0) {
+        removeAllIcons();
       }
-    }, [icons, addRandomIcon, removeAllIcons]);
-  
-    useEffect(() => {
-      const onGamepadConnected = () => {
-        console.log("Gamepad connected");
-      };
-      const onGamepadDisconnected = () => {
-        console.log("Gamepad disconnected");
-      };
-      window.addEventListener("gamepadconnected", onGamepadConnected);
-      window.addEventListener("gamepaddisconnected", onGamepadDisconnected);
-      const interval = setInterval(() => {
-        handleJoyConInput();
-      }, 100); // Check every 100ms
-      return () => {
-        window.removeEventListener("gamepadconnected", onGamepadConnected);
-        window.removeEventListener("gamepaddisconnected", onGamepadDisconnected);
-        clearInterval(interval);
-      };
-    }, [handleJoyConInput]);
+      // if (joyCon.buttons[1]?.pressed) {
+      //   addRandomIcon();
+      // }
+    }
+  }, [icons, addRandomIcon, removeAllIcons]);
+
+  useEffect(() => {
+    const onGamepadConnected = () => {
+      console.log("Gamepad connected");
+    };
+    const onGamepadDisconnected = () => {
+      console.log("Gamepad disconnected");
+    };
+    window.addEventListener("gamepadconnected", onGamepadConnected);
+    window.addEventListener("gamepaddisconnected", onGamepadDisconnected);
+    const interval = setInterval(() => {
+      handleJoyConInput();
+    }, 100);
+    return () => {
+      window.removeEventListener("gamepadconnected", onGamepadConnected);
+      window.removeEventListener("gamepaddisconnected", onGamepadDisconnected);
+      clearInterval(interval);
+    };
+  }, [handleJoyConInput]);
+
   return (
     <div className="w-full flex flex-col items-center gap-4 p-4">
       <div
