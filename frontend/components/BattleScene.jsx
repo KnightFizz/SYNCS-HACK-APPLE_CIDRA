@@ -20,8 +20,8 @@ const HPBar = ({ hp, maxHp, label, isPlayer }) => (
 
 const CanvasBattleScene = ({ totalDamage }) => {
   const canvasRef = useRef(null);
-  const [playerHP, setPlayerHP] = useState(300);
-  const [enemyHP, setEnemyHP] = useState(300);
+  const [playerHP, setPlayerHP] = useState(500);
+  const [enemyHP, setEnemyHP] = useState(500);
   const [currentTurn, setCurrentTurn] = useState("player");
   const [playerDamaged, setPlayerDamaged] = useState(false);
   const [enemyDamaged, setEnemyDamaged] = useState(false);
@@ -61,34 +61,25 @@ const CanvasBattleScene = ({ totalDamage }) => {
         // Flip the playerImage horizontally and reduce its size
         ctx.save(); // Save the current context state
         ctx.scale(-1, 1); // Flip horizontally
-        ctx.drawImage(playerImage, -220, canvas.height - 200, 150, 150); // Smaller size: 100x100
-        ctx.restore(); // Restore the original context state
-
-<<<<<<< HEAD
-        // Draw player with damage effect
-        ctx.save();
         if (playerDamaged) {
-          ctx.filter = "saturate(200%) hue-rotate(150deg)";
+          ctx.filter = "saturate(200%) hue-rotate(300deg)";
           ctx.translate(Math.random() * 4 - 2, Math.random() * 4 - 2);
         }
-        ctx.drawImage(playerImage, 80, canvas.height - 250, 200, 200);
-        ctx.restore();
+        ctx.drawImage(playerImage, -270, canvas.height - 200, 150, 150); // Smaller size: 100x100
+        ctx.restore(); // Restore the original context state
 
         // Draw enemy with damage effect
         ctx.save();
         if (enemyDamaged) {
-          ctx.filter = "saturate(200%) hue-rotate(150deg)";
+          ctx.filter = "saturate(1000%) hue-rotate(300deg)";
           ctx.translate(Math.random() * 4 - 2, Math.random() * 4 - 2);
         }
-=======
-        // Draw the enemy image smaller
->>>>>>> df79acf914d9d73e0a091f4edb63da9caff13cf1
         ctx.drawImage(
           enemyImage,
-          canvas.width - 230,
+          canvas.width - 300,
           canvas.height - 300,
-          150,  // Smaller width
-          150   // Smaller height
+          150, // Smaller width
+          150 // Smaller height
         );
         ctx.restore();
 
@@ -135,7 +126,7 @@ const CanvasBattleScene = ({ totalDamage }) => {
     if (totalDamage > 0) {
       setEnemyHP((prev) => Math.max(0, prev - totalDamage));
       setEnemyDamaged(true);
-      createExplosion(500, 140, totalDamage); // Adjust x, y to match enemy position
+      createExplosion(470, 140, totalDamage); // Adjust x, y to match enemy position
       setTimeout(() => setEnemyDamaged(false), 300);
     }
   }, [totalDamage]);
@@ -168,8 +159,8 @@ const CanvasBattleScene = ({ totalDamage }) => {
   return (
     <div className="relative">
       <div className="absolute top-3 left-0 right-0 flex justify-between p-1 z-10">
-        <HPBar hp={playerHP} maxHp={300} label="Player" isPlayer={true} />
-        <HPBar hp={enemyHP} maxHp={300} label="Enemy" isPlayer={false} />
+        <HPBar hp={playerHP} maxHp={500} label="You" isPlayer={true} />
+        <HPBar hp={enemyHP} maxHp={500} label="Enemy" isPlayer={false} />
       </div>
       <canvas
         ref={canvasRef}
