@@ -5,21 +5,22 @@ const IconList = ({ counts, onTotalDamage }) => {
   const [icons, setIcons] = useState([]);
   const [isRemoving, setIsRemoving] = useState(false);
 
-  const availableIcons = ["🔥", "🧊", "🌪️", "🍀", "🌟"];
+  const availableIcons = ["🔥", "🧊", "🌟", "🌪️", "🍀"];
   const iconColors = {
     "🔥": "bg-orange-300",
     "🧊": "bg-blue-200",
+    "🌟": "bg-gradient-to-r from-purple-400 via-blue-700 to-purple-400",
     "🌪️": "bg-slate-400",
     "🍀": "bg-green-200",
-    "🌟": "bg-gradient-to-r from-purple-400 via-blue-700 to-purple-400",
+    
   };
 
   const iconDamage = {
     "🔥": 10,
     "🧊": 12,
+    "🌟": 25,
     "🌪️": 18,
     "🍀": 14,
-    "🌟": 25,
   };
 
   const MAX_ICONS = 8;
