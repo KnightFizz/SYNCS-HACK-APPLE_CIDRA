@@ -10,14 +10,15 @@ const PostureComp = () => {
 
   return (
     <div className="h-full flex flex-col">
-      {/* Webcam placeholder */}
-      <div className="flex-1 bg-gray-300 flex items-center justify-center mb-4">
+      <div className="flex-1 bg-gray-300 flex items-center justify-center mb-4 border-4 rounded-sm border-slate-800">
         <p className="text-lg font-semibold">Webcam Placeholder</p>
       </div>
 
       {/* Grid view */}
       <div className="flex-1">
-        <h3 className="text-lg font-semibold mb-2">Posture Grid</h3>
+        <h3 className="text-lg font-semibold mb-2 text-center">
+          Posture Guide
+        </h3>
         <div className="grid grid-cols-2 gap-2">
           {gridImages.map((image) => (
             <div

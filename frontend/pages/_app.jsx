@@ -4,7 +4,7 @@ import PostureComp from "../components/posture_comp";
 
 const Block = ({ color, title, content, className, children }) => (
   <div
-    className={`${color} ${className} border-4 border-slate-800 drop-shadow-[6px_6px_0px_rgba(0,0,0,0.8)] p-4 rounded-lg shadow-md flex flex-col`}
+    className={`${color} ${className} border-4 border-slate-800 drop-shadow-[6px_6px_0px_rgba(0,0,0,0.8)] p-4 rounded-md shadow-md flex flex-col`}
   >
     <h2 className="text-xl font-bold mb-2">{title}</h2>
     {children || <p className="text-center">{content}</p>}
@@ -19,7 +19,7 @@ export default function Home() {
         <div className="col-span-4 h-full">
           <Block
             color="bg-blue-200"
-            title="Block 1"
+            title=""
             content="1/4 width block, full height"
             className="h-full"
           >
