@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useEffect } from "react";
+import axios from 'axios'; // Make sure to install axios using npm install axios
 
 const IconList = ({ counts, onTotalDamage }) => {
   const [icons, setIcons] = useState([]);
@@ -22,6 +23,7 @@ const IconList = ({ counts, onTotalDamage }) => {
   };
 
   const MAX_ICONS = 8;
+  const axios = require('axios');
 
   // Accumulate icons based on counts
   useEffect(() => {
@@ -49,7 +51,7 @@ const IconList = ({ counts, onTotalDamage }) => {
       0
     );
     onTotalDamage(totalDamage);
-    sendTotalDamageToBackend(totalDamage);
+    writeDamageInfotoFile(totalDamage); // Call the function to write to the file
     setIsRemoving(true);
     setTimeout(() => {
       setIcons([]);
@@ -57,20 +59,16 @@ const IconList = ({ counts, onTotalDamage }) => {
     }, 600);
   }, [icons, onTotalDamage]);
 
-  const sendTotalDamageToBackend = async (damage) => {
-    try {
-      const response = await fetch('http://127.0.0.1:5000/receive_damage', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ totalDamage: damage }),
-      });
 
-      const data = await response.json();
-      console.log('Response from server:', data);
+
+  const writeDamageInfotoFile = async (damage) => {
+    try {
+      const response = await axios.post('http://localhost:5000/read_damage', {
+        totalDamage: damage  // Send totalDamage as part of the request body
+      });
+      console.log('Damage info sent to backend, response:', response.data);
     } catch (error) {
-      console.error('Error sending total damage to backend:', error);
+      console.error('Error sending damage info to backend:', error);
     }
   };
 
