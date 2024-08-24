@@ -2,6 +2,7 @@ import React from "react";
 import "../styles/global.css";
 import PostureComp from "../components/posture_comp";
 import IconList from "../components/IconList";
+import HealthBarHandler from "../components/HealthBarHandler";
 
 const Block = ({ color, title, content, className, children }) => (
   <div
@@ -30,12 +31,14 @@ export default function Home() {
         <div className="col-span-8 grid grid-rows-6 gap-4">
           {/* Block 2 - 3/4 width, 4/5 height */}
           <div className="row-span-10">
+            <HealthBarHandler/>
             <Block
               color="bg-green-200"
               title="Block 2"
               content="3/4 width block, 4/5 height of the right column"
               className="h-full"
             />
+            
           </div>
 
           {/* Bottom row for Block 3 and 4 - 1/5 height */}

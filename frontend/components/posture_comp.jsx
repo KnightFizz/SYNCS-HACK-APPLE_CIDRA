@@ -1,12 +1,12 @@
 import React from "react";
 import WebcamLoader from "./WebcamLoader.jsx";
-import ReactPlayer from 'react-player'
+import ReactPlayer from "react-player";
 
 const PostureComp = () => {
   const gridImages = [
     { id: 1, src: "/Resources/GIF/Squat_Update.gif", alt: "Posture 1" },
-    { id: 2, src: "/api/placeholder/100/100", alt: "Posture 2" },
-    { id: 3, src: "/api/placeholder/100/100", alt: "Posture 3" },
+    { id: 2, src: "/Resources/GIF/Curl.gif", alt: "Posture 2" },
+    { id: 3, src: "/Resources/GIF/LatRise.gif", alt: "Posture 3" },
     { id: 4, src: "/api/placeholder/100/100", alt: "Posture 4" },
   ];
 

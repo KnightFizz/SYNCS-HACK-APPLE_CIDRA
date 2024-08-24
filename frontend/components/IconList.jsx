@@ -2,107 +2,120 @@ import React, { useState, useCallback, useEffect } from "react";
 
 const IconList = () => {
   const [icons, setIcons] = useState([]);
-  const availableIcons = ["🔥", "🧊", "🌪️", "💫"];
+  const availableIcons = ["🔥", "🧊", "🌪️", "🍀", "🌟"];
+  const iconColors = {
+    "🔥": "bg-orange-300",
+    "🧊": "bg-blue-200",
+    "🌪️": "bg-slate-400",
+    "🍀": "bg-green-200",
+    "🌟": "bg-gradient-to-r from-purple-400 via-blue-700 to-purple-400",
+  };
+
+  const iconDamage = {
+    "🔥": 10,
+    "🧊": 5,
+    "🌪️": 15,
+    "🍀": 16,
+    "🌟": 28,
+  };
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const MAX_ICONS = 8;
 
   const addRandomIcon = useCallback(() => {
-    const randomIndex = Math.floor(Math.random() * availableIcons.length);
-    const newIcon = {
-      id: Date.now(),
-      name: availableIcons[randomIndex],
-    };
-    setIcons((prevIcons) => [...prevIcons, newIcon]);
-  }, []);
+    if (icons.length < MAX_ICONS) {
+      const randomIndex = Math.floor(Math.random() * availableIcons.length);
+      const newIcon = {
+        id: Date.now(),
+        name: availableIcons[randomIndex],
+      };
+      setIcons((prevIcons) => [...prevIcons, newIcon]);
+    }
+  }, [icons]);
 
-  const handleRemoveIcon = (id) => {
-    setIcons((prevIcons) => prevIcons.filter((icon) => icon.id !== id));
-  };
+  const removeAllIcons = useCallback(() => {
+    setIcons([]);
+    setSelectedIndex(0);
+  }, []);
 
   const handleJoyConInput = useCallback(() => {
     const gamepads = navigator.getGamepads();
     const joyCon = gamepads[0]; // Assuming the Joy-Con is the first connected gamepad
-
     if (joyCon) {
-      // D-Pad Right
-      if (joyCon.buttons[15]?.pressed) {
-        setSelectedIndex((prevIndex) =>
-          prevIndex < icons.length - 1 ? prevIndex + 1 : 0
-        );
-      }
-
-      // D-Pad Left
-      if (joyCon.buttons[14]?.pressed) {
-        setSelectedIndex((prevIndex) =>
-          prevIndex > 0 ? prevIndex - 1 : icons.length - 1
-        );
-      }
-
-      // A Button (Select/Remove)
+      // A Button (Select/Remove All)
       if (joyCon.buttons[0]?.pressed && icons.length > 0) {
-        handleRemoveIcon(icons[selectedIndex].id);
+        removeAllIcons();
       }
-
       // B Button (Add Icon)
       if (joyCon.buttons[1]?.pressed) {
         addRandomIcon();
       }
     }
-  }, [icons, selectedIndex, addRandomIcon]);
+  }, [icons, selectedIndex, addRandomIcon, removeAllIcons]);
 
   useEffect(() => {
-    // Log connection events
     const onGamepadConnected = () => {
       console.log("Gamepad connected");
     };
-
     const onGamepadDisconnected = () => {
       console.log("Gamepad disconnected");
     };
-
     window.addEventListener("gamepadconnected", onGamepadConnected);
     window.addEventListener("gamepaddisconnected", onGamepadDisconnected);
-
-    // Poll for gamepad input
     const interval = setInterval(() => {
       handleJoyConInput();
     }, 100); // Check every 100ms
-
-    // Cleanup
     return () => {
       window.removeEventListener("gamepadconnected", onGamepadConnected);
       window.removeEventListener("gamepaddisconnected", onGamepadDisconnected);
       clearInterval(interval);
     };
   }, [handleJoyConInput]);
-  
+
   return (
-    <div className="flex flex-col items-center gap-4 p-4 bg-gray-100 rounded-lg">
-      <div
-        className="flex flex-wrap gap-2 p-4 bg-white rounded-lg shadow-md cursor-pointer min-h-[100px] min-w-[200px] justify-center items-center"
-        onClick={addRandomIcon}
-      >
-        {icons.map((icon) => (
+    <div className="w-full flex flex-col items-center gap-4 p-4">
+      <div className="w-full grid grid-cols-8 gap-2 p-4 rounded-lg min-h-[100px] bg-none">
+        {icons.map((icon, index) => (
           <div
             key={icon.id}
-            className="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full shadow hover:bg-gray-200 transition-colors duration-200"
-            onClick={(e) => {
-              e.stopPropagation(); // Prevent event bubbling
-              handleRemoveIcon(icon.id);
-            }}
+            className={`flex items-center justify-center aspect-square rounded-lg border-4 border-slate-800 drop-shadow-[6px_6px_0px_rgba(0,0,0,0.8)] transition-all duration-200 ${
+              iconColors[icon.name]
+            } ${icon.name === "🌟" ? "rainbow-shine" : ""}`}
           >
-            <span className="icon text-2xl">{icon.name}</span>
+            <span className="icon text-4xl">{icon.name}</span>
           </div>
         ))}
-        {icons.length === 0 && (
-          <p className="text-gray-400">Click to add an icon</p>
-        )}
+        {Array(MAX_ICONS - icons.length)
+          .fill(null)
+          .map((_, index) => (
+            <div
+              key={`empty-${index}`}
+              className="aspect-square rounded-lg bg-gray-200 border-4 border-slate-900 drop-shadow-[3px_3px_0px_rgba(0,0,0,0.8)]"
+            />
+          ))}
       </div>
-      <button
-        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors duration-200"
-        onClick={addRandomIcon}
+      <div
+        className={`mt-2 px-3 py-1 rounded-full text-sm border-4 border-slate-900 drop-shadow-[3px_3px_0px_rgba(0,0,0,0.8)] ${
+          icons.length === MAX_ICONS
+            ? "bg-red-500 text-white"
+            : "bg-gray-100 text-gray-700"
+        } transition-colors duration-300 text-lg`}
       >
-        Add Random Icon
-      </button>
+        Icons: {icons.length} / {MAX_ICONS}
+      </div>
+      <style jsx>{`
+        @keyframes rainbow-shine {
+          0% {
+            background-position: 0% 50%;
+          }
+          100% {
+            background-position: 200% 50%;
+          }
+        }
+        .rainbow-shine {
+          background-size: 200% 200%;
+          animation: rainbow-shine 1.5s ease infinite;
+        }
+      `}</style>
     </div>
   );
 };
