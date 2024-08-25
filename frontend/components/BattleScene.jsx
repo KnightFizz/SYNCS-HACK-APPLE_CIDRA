@@ -47,8 +47,8 @@ const CanvasBattleScene = ({ damageReceived, totalDamage }) => {
 
 
   const canvasRef = useRef(null);
-  const [playerHP, setPlayerHP] = useState(500);
-  const [enemyHP, setEnemyHP] = useState(500);
+  const [playerHP, setPlayerHP] = useState(150);
+  const [enemyHP, setEnemyHP] = useState(300);
   // const [currentTurn, setCurrentTurn] = useState("player");
   const [playerDamaged, setPlayerDamaged] = useState(false);
   const [enemyDamaged, setEnemyDamaged] = useState(false);
@@ -222,8 +222,8 @@ const CanvasBattleScene = ({ damageReceived, totalDamage }) => {
   const handleModalClose = () => {
     setIsModalOpen(false);
     // Reset the game state
-    setPlayerHP(500);
-    setEnemyHP(500);
+    setPlayerHP(150);
+    setEnemyHP(300);
     setParticles([]);
     setGameResult(null);
   };
@@ -231,8 +231,8 @@ const CanvasBattleScene = ({ damageReceived, totalDamage }) => {
   return (
     <div className="relative">
       <div className="absolute top-3 left-0 right-0 flex justify-between p-1 z-10">
-        <HPBar hp={playerHP} maxHp={500} label="You" isPlayer={true} />
-        <HPBar hp={enemyHP} maxHp={500} label="Enemy" isPlayer={false} />
+        <HPBar hp={playerHP} maxHp={150} label="You" isPlayer={true} />
+        <HPBar hp={enemyHP} maxHp={300} label="Enemy" isPlayer={false} />
       </div>
       <canvas
         ref={canvasRef}
