@@ -28,12 +28,13 @@ Fitness Battle Game is an innovative multiplayer game that leverages webcam-base
 The pose detection used in this project is based on Google's Mediapipe framework, which is a cross-platform machine learning library designed to identify multiple pose positions. Mediapipe provides robust tools for real-time pose tracking and recognition, enabling applications that rely on accurate body pose estimations to identify various body positions and movements.
 
 ### Functions:
-- Players use their webcam to detect and track their exercise postures(squat && curl currently). Each successful posture grants a player an icon with specific attributes that can be used in a battle.
-- The game requires at least two players, each participating from their own computer.
-- Players can compete against each other using the icons they have earned. The icons grant abilities or attacks during the battle, similar to a Pokémon card competition.
-- A Hit Points（HP）bar is displayed for each player, and the game ends when one player's HP reaches zero.
-- (Optional) Before entering the game, players can customize their avatar or character.
+- Players use their webcams to detect and track specific exercise postures, such as squats, curls, and lateral raises. Successfully performing each posture rewards the player with an icon that unlocks unique attack abilities. 
+- The game requires at least two players, each joining from their own computer. 
+- Players can engage in battles using the icons they’ve earned. These icons represent abilities or attacks that can be strategically deployed during the battle, much like in a Pokémon card competition. 
+- Each player has a Hit Points (HP) bar displayed on-screen. The game concludes when a player’s HP is reduced to zero. 
+- A helpful guide is displayed in the bottom-left corner of the screen, providing players with instructions and tips as they play.
 
 ## Informal Reference
-- For squat GIF: https://www.youtube.com/watch?v=xqvCmoLULNY
-- For curl GIF: https://www.youtube.com/watch?v=TVflFTempWA
+- For squat posture: https://www.youtube.com/watch?v=xqvCmoLULNY
+- For curl posture: https://www.youtube.com/watch?v=TVflFTempWA
+- For lateral rise posture: https://www.youtube.com/shorts/YFot2OlmUGY
