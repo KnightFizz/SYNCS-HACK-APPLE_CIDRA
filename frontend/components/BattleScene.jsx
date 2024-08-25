@@ -32,8 +32,14 @@ const Modal = ({ isOpen, onClose, result }) => {
             ? "Congratulations on your victory!"
             : "Better luck next time!"}
         </p>
+        <img
+          src={result === "win" ? "/Resources/SVG/YouWin.svg" : "/Resources/SVG/YouLose.svg"}
+          alt={result === "win" ? "You Win" : "You Lose"}
+          className="mx-auto w-48 h-48"  // Adjust the size here
+        />
       </div>
     </div>
+
   );
 };
 
