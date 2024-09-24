@@ -5,12 +5,12 @@
 | -------- | ------- |
 | Jiacheng Yu :tangerine:  | https://github.com/mryu888-plus    |
 | Yangqing Zheng :pig_nose: | https://github.com/zyqgrace     |
-| Micheal Fang :snowflake:    | https://github.com/KnightFizz    |
+| Michael Fang :snowflake:    | https://github.com/KnightFizz    |
 | James Zhao :moyai: | https://github.com/cheese-zj |
 | Xinyi Chen :jellyfish: | https://github.com/OrangeJellyfishCHEN |
 
 ## Project Description
-**Name: Breakfast Brawls
+**Name: Breakfast Brawls**
 Inspiration
 Our project draws inspiration from Nintendo's Pokémon Card Game and Ring Fit Adventure. We aim to blend fitness with competitive gameplay, using exercise to power players' abilities in a virtual card battle. This hybrid approach engages users physically while fostering social interaction and healthy competition.
 
