@@ -10,7 +10,7 @@
 | Xinyi Chen :jellyfish: | https://github.com/OrangeJellyfishCHEN |
 
 ## Project Description
-**Name: Not decided yet**   
+**Name: Breakfast Brawls
 Inspiration
 Our project draws inspiration from Nintendo's Pokémon Card Game and Ring Fit Adventure. We aim to blend fitness with competitive gameplay, using exercise to power players' abilities in a virtual card battle. This hybrid approach engages users physically while fostering social interaction and healthy competition.
 
